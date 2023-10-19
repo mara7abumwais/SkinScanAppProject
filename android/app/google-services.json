@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "142610782953",
+    "project_id": "skinscan-15626",
+    "storage_bucket": "skinscan-15626.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142610782953:android:db2b8c4126addc17556e78",
+        "android_client_info": {
+          "package_name": "com.example.firstseniorproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcBEd-qdCR8YDxB0Qc-X2_NIDmiTUy_tQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
