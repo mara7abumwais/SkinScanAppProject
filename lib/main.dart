@@ -59,9 +59,12 @@ class MyApp extends StatelessWidget {
             }else if(snapshot.hasError){
               return Center(child: Text('something went wrong!'),);
             }
-           else if(snapshot.hasData){
-              return TabNavigation(0);
-            } else {
+          //  else 
+          //  if(snapshot.hasData){
+            
+          //     return TabNavigation(0);
+          //   } 
+            else {
             return Login();
 
             }

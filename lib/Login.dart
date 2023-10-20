@@ -184,13 +184,47 @@ class _LoginState extends State<Login> {
     );
   }
   Future signIn( )async{
+     User? user;
+       final auth = FirebaseAuth.instance;
+     user = auth.currentUser;
+    
   showDialog(context: context, 
     barrierDismissible: false,
     builder: (context)=>Center(child: CircularProgressIndicator(),));
     try{
-  await FirebaseAuth.instance.signInWithEmailAndPassword(
+  UserCredential userCredential =await FirebaseAuth.instance.signInWithEmailAndPassword(
     email: emailcontroller.text.trim(), password: passwordcontroller.text.trim());
+
+    if (userCredential.user != null && userCredential.user!.emailVerified){
     Navigator.pushNamed(context, '/tabNavigation');
+    }
+    else {
+        // Email is not verified
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Email Not Verified'),
+              content: Text(
+                'Please verify your email before logging in.',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    
+                    Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+
+                  },
+                ),
+                TextButton(onPressed:()=>user!.sendEmailVerification(), child: Text('Resent Email'),)
+              ],
+            );
+          },
+        );
+      }
+
     } on FirebaseAuthException catch(e){
       print(e);
     }
