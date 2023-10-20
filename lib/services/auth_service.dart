@@ -11,7 +11,7 @@ class AuthService {
       builder: (BuildContext context, snapchot) {
         if(snapchot.hasData)
         {
-          return TabNavigation();
+          return TabNavigation(0);
         }
         else{
           return Login();

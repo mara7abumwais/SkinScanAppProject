@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firstseniorproject/firebase_options.dart';
-
+import 'package:firstseniorproject/aboutUs.dart';
+import 'package:firstseniorproject/codeVerification.dart';
+import 'package:firstseniorproject/contactUs.dart';
+import 'package:firstseniorproject/editProfile.dart';
+import 'package:firstseniorproject/services/firebase_options.dart';
 import 'package:firstseniorproject/changePassword.dart';
-import 'package:firstseniorproject/chatbot.dart';
 import 'package:firstseniorproject/clinics.dart';
 import 'package:firstseniorproject/createPassword.dart';
+import 'package:firstseniorproject/profile.dart';
 import 'package:firstseniorproject/records.dart';
 import 'package:firstseniorproject/scan.dart';
 import 'package:firstseniorproject/scanResult.dart';
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SkinScan',
       theme: ThemeData(
-          brightness: Brightness.dark
+          brightness: Brightness.light
       ),
       routes: <String, WidgetBuilder>{
         '/': (BuildContext ctx) => MyAnimation(),
@@ -47,21 +50,25 @@ class MyApp extends StatelessWidget {
               return Center(child: Text('something went wrong!'),);
             }
            else if(snapshot.hasData){
-              return TabNavigation();
+              return TabNavigation(0);
             } else {
             return Login();
 
             }
           }
         ),
-        '/tabNavigation': (BuildContext ctx) =>TabNavigation(),
+        '/tabNavigation': (BuildContext ctx) =>TabNavigation(0),
         '/scan':(BuildContext ctx) => CameraWidget(),
         '/scanResult':(BuildContext ctx) => ScanResultWidget(dermatosisName: 'x', percentage: 90, clinics: "c1,c2", treatment: "t1"),
-        '/Chatbot':(BuildContext ctx)=> ChatHome(),
         '/forgetPassword':(BuildContext ctx) => ForgotPassword(),
         '/records':(BuildContext ctx) => Records(),
         '/createPassword':(BuildContext ctx) => CreatePassword(),
+        '/codeVerification':(BuildContext ctx) => CodeVerification(),
         '/clinics':(BuildContext ctx) => Clinics(),
+        '/profile':(BuildContext ctx) => Profile(),
+        '/editProfile':(BuildContext ctx) => EditProfile(),
+        '/contactUs':(BuildContext ctx)=> ContactUsPage(),
+        '/aboutUs':(BuildContext ctx)=> const AboutUsPage(),
       },
     );
   }

@@ -29,7 +29,6 @@ class _signUpState extends State<signUp> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +44,7 @@ class _signUpState extends State<signUp> {
                     child: Container(
                       decoration: const BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('background.png'),
+                              image: AssetImage('assets/background.png'),
                               fit: BoxFit.contain)),
                     ),
                   ),
@@ -89,7 +88,7 @@ class _signUpState extends State<signUp> {
                             child: TextField(
                               controller: namecontroller,
                               style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: "User Name",
                                 hintStyle:
                                     TextStyle(color: Colors.grey, fontSize: 12),
@@ -110,13 +109,11 @@ class _signUpState extends State<signUp> {
                           //   ),
                           // ),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 25),
-                            decoration: BoxDecoration(),
+                            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
                             child: TextField(
                               controller: agecontroller,
                               style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: "Age",
                                 hintStyle:
                                     TextStyle(color: Colors.grey, fontSize: 12),
@@ -125,8 +122,7 @@ class _signUpState extends State<signUp> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 25),
+                            padding:const  EdgeInsets.symmetric(vertical: 0, horizontal: 25),
                             decoration: BoxDecoration(),
                             child: TextFormField(
                               controller: emailcontroller,
@@ -137,7 +133,7 @@ class _signUpState extends State<signUp> {
                                   ? 'enter a valid email'
                                   : null,
                               style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: "Email address",
                                 hintStyle:
                                     TextStyle(color: Colors.grey, fontSize: 10),
@@ -146,8 +142,7 @@ class _signUpState extends State<signUp> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 25),
+                            padding: const  EdgeInsets.symmetric(vertical: 0, horizontal: 25),
                             child: TextFormField(
                               controller: passwordcontroller,
                               autovalidateMode:
@@ -177,8 +172,7 @@ class _signUpState extends State<signUp> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 25),
+                            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
                             child: TextFormField(
                               controller: confpasswordcontroller,
                               style: TextStyle(color: Colors.black),
@@ -213,7 +207,7 @@ class _signUpState extends State<signUp> {
                                 return null;
                               },
                               style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: "City",
                                 hintStyle:
                                     TextStyle(color: Colors.grey, fontSize: 12),
@@ -225,9 +219,7 @@ class _signUpState extends State<signUp> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20,),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -239,9 +231,8 @@ class _signUpState extends State<signUp> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50.0),
                           color: Color.fromARGB(200, 5, 88, 106)),
-                      margin: EdgeInsets.symmetric(horizontal: 85),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 80),
+                      margin: EdgeInsets.symmetric(horizontal: 85,vertical: 30),
+                      padding: EdgeInsets.symmetric(vertical: 20,horizontal: 40),
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(color: Colors.white, fontSize: 18),
@@ -282,7 +273,7 @@ class _signUpState extends State<signUp> {
 
      if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Passwords do not match'),backgroundColor: Colors.red,
         ),
       );
@@ -291,22 +282,26 @@ class _signUpState extends State<signUp> {
     }
 
     final isValid = formKey.currentState!.validate();
-    if (!isValid && !match) return;
-
-
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailcontroller.text.trim(),
-          password: passwordcontroller.text.trim());
-      addUserDetails();
-      Navigator.pushNamed(context, '/introScreen');
-    } on FirebaseAuthException catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(e.message!),backgroundColor: Colors.red,
-    ),);
+    if (isValid && match)
+    {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailcontroller.text.trim(),
+            password: passwordcontroller.text.trim());
+        addUserDetails();
+        Navigator.pushNamed(context, '/introScreen');
+      } on FirebaseAuthException catch (e) {
+           print(e);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.message!),backgroundColor: Colors.red,
+        ),);
+      }
     }
-  }
+    else {
+      return;
+    }
+    }
+
 
   Future addUserDetails() async {
     await FirebaseFirestore.instance.collection('users').add({

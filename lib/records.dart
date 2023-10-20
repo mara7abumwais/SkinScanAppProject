@@ -4,7 +4,7 @@ class Scan {
   final String image;
   final String dermatosis;
   final double percentage;
-  final DateTime date;
+  final String date;
   final String treatment;
 
   Scan({
@@ -36,24 +36,24 @@ class _RecordsState extends State<Records> {
     super.initState();
     // Initialize with some sample data
     scans.add(Scan(
-      image: '/introScreen1.jpg',
+      image: 'assets/introScreen1.jpg',
       dermatosis: 'Dermatosis 1',
       percentage: 60.0,
-      date: DateTime.now().subtract(Duration(days: 2)),
+      date: "2023-8-16",
       treatment: 'Treatment for Dermatosis 1',
     ));
     scans.add(Scan(
-      image: '/introScreen2.jpg',
+      image: 'assets/introScreen2.jpg',
       dermatosis: 'Dermatosis 2',
       percentage: 92.5,
-      date: DateTime.now().subtract(Duration(days: 5)),
+      date: "2023-8-16",
       treatment: 'Treatment for Dermatosis 2',
     ));
     scans.add(Scan(
-      image: '/introScreen3.jpg',
+      image: 'assets/introScreen3.jpg',
       dermatosis: 'Dermatosis 3',
       percentage: 40,
-      date: DateTime.now().subtract(Duration(days: 6)),
+      date: "2023-8-16",
       treatment: 'Treatment for Dermatosis 3',
     ));
 
@@ -79,13 +79,13 @@ class _RecordsState extends State<Records> {
                       setState(() {
                         selectedOption = index;
                         if(selectedOption == 0 )
-                          {
-                            scan2 = scans;
-                          }
+                        {
+                          scan2 = scans;
+                        }
                         else if(selectedOption == 1)
-                          {
-                            scan2 = scans.where((scan) => scan.percentage < 50).toList();
-                          }
+                        {
+                          scan2 = scans.where((scan) => scan.percentage < 50).toList();
+                        }
                         else if(selectedOption == 2)
                         {
                           scan2 = scans.where((scan) => (scan.percentage < 70 && scan.percentage >= 50) ).toList();
@@ -199,6 +199,7 @@ class _RecordsState extends State<Records> {
                       title: Text(scan.dermatosis),
                       subtitle: Text('Percentage: ${scan.percentage.toStringAsFixed(2)}%'),
                       trailing: Text('Date: ${scan.date}'),
+                      //ما عرضت التريتمنت
                     ),
                   );
                 },

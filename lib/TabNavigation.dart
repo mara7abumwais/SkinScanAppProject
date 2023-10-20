@@ -4,14 +4,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:firstseniorproject/records.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'profile.dart';
+import 'package:firstseniorproject/settings.dart';
+
 
 class TabNavigation extends StatelessWidget {
+  final int selectedPage;
+  const TabNavigation(this.selectedPage);
+
   @override
-  String appBarName = 'SkinScan';
 
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    String appBarName = 'SkinScan';
+
+    return  DefaultTabController(
+      initialIndex:selectedPage,
       length: 5,
       child: Scaffold(
         appBar: AppBar(
@@ -28,7 +34,7 @@ class TabNavigation extends StatelessWidget {
             Records(),
             CameraWidget(),
             ChatBody(),
-            Profile(),
+            Settings(),
           ],
         ),
         bottomNavigationBar: Material(

@@ -33,13 +33,13 @@ class _LoginState extends State<Login> {
               child: Stack(
                 children: <Widget>[
                   Positioned(
-                    top: -100,
+                    top: -110,
                     height: 400,
                     width: width,
                     child: Container(
                       decoration:const  BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('background.png'),
+                              image: AssetImage('assets/background.png'),
                               fit: BoxFit.contain)),
                     ),
                   ),
@@ -145,11 +145,9 @@ class _LoginState extends State<Login> {
                   ),
                   GestureDetector(
                     onTap:  () {
-                     
                       setState(() {
                         signIn();
-                                                    // Navigator.pushNamed(context, '/tabNavigation');
-
+                        // Navigator.pushNamed(context, '/tabNavigation');
                       });
                     },
                     child: Container(
