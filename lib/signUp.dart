@@ -58,16 +58,6 @@ class _signUpState extends State<signUp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Container(
-                  //   child: Text(
-                  //    signUp
-                  //     style: TextStyle(
-                  //         color: Color.fromARGB(200, 5, 88, 106),
-                  //         fontWeight: FontWeight.bold,
-                  //         fontSize: 30),
-                  //   ),
-                  // ),
-
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),

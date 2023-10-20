@@ -41,31 +41,33 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (BuildContext ctx) => MyAnimation(),
         '/signUp': (BuildContext ctx) =>StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
-            if(snapshot.hasData){
-              return VerifyScreen();
-            } else {
+            stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
+          if(snapshot.hasData){
+            return VerifyScreen();
+          } else {
             return signUp();
 
-            }
+          }
 
-          }),
+        }),
         '/introScreen': (BuildContext ctx) => IntroScreen(),
         '/login':(BuildContext ctx)=>StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context,snapshot) {
-            if(snapshot.connectionState==ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator(),);
-            }else if(snapshot.hasError){
-              return Center(child: Text('something went wrong!'),);
-            }
-           else if(snapshot.hasData){
-              return TabNavigation(0);
-            } else {
-            return Login();
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context,snapshot) {
+              if(snapshot.connectionState==ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator(),);
+              }else if(snapshot.hasError){
+                return Center(child: Text('something went wrong!'),);
+              }
+              //  else
+              //  if(snapshot.hasData){
 
+              //     return TabNavigation(0);
+              //   }
+              else {
+                return Login();
+              }
             }
-          }
         ),
         '/tabNavigation': (BuildContext ctx) =>TabNavigation(0),
         '/scan':(BuildContext ctx) => CameraWidget(),
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
         '/editProfile':(BuildContext ctx) => EditProfile(),
         '/contactUs':(BuildContext ctx)=> ContactUsPage(),
         '/aboutUs':(BuildContext ctx)=> const AboutUsPage(),
-                '/verify':(BuildContext ctx)=>  VerifyScreen(),
+        '/verify':(BuildContext ctx)=>  VerifyScreen(),
 
       },
     );

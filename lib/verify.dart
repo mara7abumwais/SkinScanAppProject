@@ -38,13 +38,20 @@ class _VerifyScreenState extends State<VerifyScreen> {
     return Scaffold(
       body: Center(
           child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Text('An email has been sent to ${user!.email} please verify',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            )),
-      )),
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Text('An email has been sent to ${user!.email} please verify',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    )),
+                ElevatedButton(onPressed:()=>user!.sendEmailVerification(), child: Text('Resent Email'),),
+
+                ElevatedButton(onPressed:()=>FirebaseAuth.instance.signOut() , child: Text('cancel'),)
+              ],
+            ),
+          )),
     );
   }
 

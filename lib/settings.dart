@@ -32,8 +32,7 @@ class _SettingsState extends State<Settings> {
           child: ListView(
             children: [
               const CircleAvatar(
-                backgroundColor: Color.fromARGB(255, 5, 88, 106),
-                child: Text('D', style: TextStyle(color: Colors.white)),
+                backgroundImage: AssetImage('assets/testUser.jpg'),
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
