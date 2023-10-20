@@ -18,6 +18,7 @@ import 'signUp.dart';
 import 'Login.dart';
 import 'myAnimation.dart';
 import 'IntroScreen.dart';
+import 'verify.dart';
 
 Future< void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,16 @@ class MyApp extends StatelessWidget {
       ),
       routes: <String, WidgetBuilder>{
         '/': (BuildContext ctx) => MyAnimation(),
-        '/signUp': (BuildContext ctx) =>signUp(),
+        '/signUp': (BuildContext ctx) =>StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
+            if(snapshot.hasData){
+              return VerifyScreen();
+            } else {
+            return signUp();
+
+            }
+
+          }),
         '/introScreen': (BuildContext ctx) => IntroScreen(),
         '/login':(BuildContext ctx)=>StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -69,6 +79,8 @@ class MyApp extends StatelessWidget {
         '/editProfile':(BuildContext ctx) => EditProfile(),
         '/contactUs':(BuildContext ctx)=> ContactUsPage(),
         '/aboutUs':(BuildContext ctx)=> const AboutUsPage(),
+                '/verify':(BuildContext ctx)=>  VerifyScreen(),
+
       },
     );
   }

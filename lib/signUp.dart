@@ -16,11 +16,13 @@ class signUp extends StatefulWidget {
 class _signUpState extends State<signUp> {
   bool _showPassword = true;
   final formKey = GlobalKey<FormState>();
-  final namecontroller = TextEditingController();
+  final fnamecontroller = TextEditingController();
+  final lnamecontroller = TextEditingController();
+
   final agecontroller = TextEditingController();
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
-    final confpasswordcontroller = TextEditingController();
+  final confpasswordcontroller = TextEditingController();
 
   final citycontroller = TextEditingController();
 
@@ -86,7 +88,7 @@ class _signUpState extends State<signUp> {
                                 vertical: 0, horizontal: 25),
                             decoration: BoxDecoration(),
                             child: TextField(
-                              controller: namecontroller,
+                              controller: fnamecontroller,
                               style: TextStyle(color: Colors.black),
                               decoration: const InputDecoration(
                                 hintText: "User Name",
@@ -96,20 +98,24 @@ class _signUpState extends State<signUp> {
                               ),
                             ),
                           ),
-                          // Container(
-                          //   padding: EdgeInsets.symmetric(vertical: 0,horizontal: 25),
-                          //   decoration: BoxDecoration(),
-                          //   child: TextField(
-                          //     style: TextStyle(color: Colors.black),
-                          //     decoration: InputDecoration(
-                          //       hintText: "Last Name",
-                          //       hintStyle: TextStyle(color: Colors.grey ,fontSize: 12),
-                          //       prefixIcon: Icon(Icons.person),
-                          //     ),
-                          //   ),
-                          // ),
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 25),
+                            decoration: BoxDecoration(),
+                            child: TextField(
+                              controller: lnamecontroller,
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                hintText: "Last Name",
+                                hintStyle:
+                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                prefixIcon: Icon(Icons.person),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 25),
                             child: TextField(
                               controller: agecontroller,
                               style: TextStyle(color: Colors.black),
@@ -122,7 +128,8 @@ class _signUpState extends State<signUp> {
                             ),
                           ),
                           Container(
-                            padding:const  EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 25),
                             decoration: BoxDecoration(),
                             child: TextFormField(
                               controller: emailcontroller,
@@ -142,7 +149,8 @@ class _signUpState extends State<signUp> {
                             ),
                           ),
                           Container(
-                            padding: const  EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 25),
                             child: TextFormField(
                               controller: passwordcontroller,
                               autovalidateMode:
@@ -172,7 +180,8 @@ class _signUpState extends State<signUp> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 25),
                             child: TextFormField(
                               controller: confpasswordcontroller,
                               style: TextStyle(color: Colors.black),
@@ -219,7 +228,9 @@ class _signUpState extends State<signUp> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -231,8 +242,10 @@ class _signUpState extends State<signUp> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50.0),
                           color: Color.fromARGB(200, 5, 88, 106)),
-                      margin: EdgeInsets.symmetric(horizontal: 85,vertical: 30),
-                      padding: EdgeInsets.symmetric(vertical: 20,horizontal: 40),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 85, vertical: 30),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(color: Colors.white, fontSize: 18),
@@ -269,43 +282,45 @@ class _signUpState extends State<signUp> {
   Future signUp() async {
     String password = passwordcontroller.text;
     String confirmPassword = confpasswordcontroller.text;
-    bool match=false;
+    bool match = false;
 
-     if (password != confirmPassword) {
+    if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Passwords do not match'),backgroundColor: Colors.red,
+          content: Text('Passwords do not match'),
+          backgroundColor: Colors.red,
         ),
       );
-    }else {
-     match=true;
+    } else {
+      match = true;
     }
 
     final isValid = formKey.currentState!.validate();
-    if (isValid && match)
-    {
+    if (isValid && match) {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailcontroller.text.trim(),
             password: passwordcontroller.text.trim());
         addUserDetails();
-        Navigator.pushNamed(context, '/introScreen');
+        // Navigator.pushNamed(context, '/introScreen');
       } on FirebaseAuthException catch (e) {
-           print(e);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.message!),backgroundColor: Colors.red,
-        ),);
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message!),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
-    }
-    else {
+    } else {
       return;
     }
-    }
-
+  }
 
   Future addUserDetails() async {
     await FirebaseFirestore.instance.collection('users').add({
-      'username': namecontroller.text.trim(),
+      'firstname': fnamecontroller.text.trim(),
+      'lasttname': lnamecontroller.text.trim(),
       'age': int.parse(agecontroller.text.trim()),
       'email': emailcontroller.text.trim(),
       'city': citycontroller.text.trim(),

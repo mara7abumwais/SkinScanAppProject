@@ -184,10 +184,13 @@ class _LoginState extends State<Login> {
     );
   }
   Future signIn( )async{
-  
+  showDialog(context: context, 
+    barrierDismissible: false,
+    builder: (context)=>Center(child: CircularProgressIndicator(),));
     try{
   await FirebaseAuth.instance.signInWithEmailAndPassword(
     email: emailcontroller.text.trim(), password: passwordcontroller.text.trim());
+    Navigator.pushNamed(context, '/tabNavigation');
     } on FirebaseAuthException catch(e){
       print(e);
     }
