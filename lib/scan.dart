@@ -80,7 +80,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                     children: [
                       Expanded(
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 8, 106)),
+                            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
                             onPressed: ()=> getImageFromCamera(),
                             child: const Text('Capture Image'),
                           )
@@ -88,12 +88,29 @@ class _CameraWidgetState extends State<CameraWidget> {
                       SizedBox(width: 20,),
                       Expanded(
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 8, 106)),
+                            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
                             onPressed: ()=> getImageFromGallery(),
                             child: const Text('Select Image'),
                           )
                       )
                     ],
+                  ),
+                  Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
+                        onPressed: ()
+                        {
+                          if(imageFile== null)
+                            {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Please upload image first'))
+                              );
+                            }else{
+                            Navigator.pushNamed(context, 'scanResult');
+                          }
+                        },
+                        child: const Text('Scan Image'),
+                      )
                   )
                 ],
               ),

@@ -22,20 +22,29 @@ class _LoginState extends State<Login> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.transparent, // Make Scaffold background transparent
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/login.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Column(
+      backgroundColor: Colors.white, // Make Scaffold background transparent
+      body: SingleChildScrollView(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
+              Container(
+                height: 230,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      top: -110,
+                      height: 400,
+                      width: width,
+                      child: Container(
+                        decoration:const  BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('assets/background.png'),
+                                fit: BoxFit.contain)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
@@ -79,9 +88,8 @@ class _LoginState extends State<Login> {
                             child: TextField(
                               controller:emailcontroller,
                               style: TextStyle(color: Colors.black),
-                              decoration:  InputDecoration(
+                              decoration:  const InputDecoration(
                                 hintText: "Email address",
-                                //  suffixStyle: TextStyle(color: Colors.black),
                                 hintStyle: TextStyle(color: Colors.grey),
                                 prefixIcon: Icon(Icons.email),
                               ),
@@ -92,7 +100,6 @@ class _LoginState extends State<Login> {
                             child: TextField(
                               controller: passwordcontroller,
                               style: TextStyle(color: Colors.black),
-                              // controller: _passwordController,
                               decoration: InputDecoration(
                                 hintText: "Password",
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -137,17 +144,17 @@ class _LoginState extends State<Login> {
                       onTap:  () {
                         setState(() {
                           signIn();
-                          // Navigator.pushNamed(context, '/tabNavigation');
+// Navigator.pushNamed(context, '/tabNavigation');
                         });
                       },
                       child: Container(
-                        // height: 60,
+// height: 60,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50.0),
                             color: Color.fromARGB(200,5, 88, 106)
                         ),
                         margin: EdgeInsets.symmetric(horizontal: 85),
-                        padding: EdgeInsets.symmetric(vertical: 20,horizontal: 100),
+                        padding: EdgeInsets.symmetric(vertical: 20,horizontal: 50),
                         child: const Text(
                           "Login",
                           style: TextStyle(color: Colors.white, fontSize: 18),
@@ -177,10 +184,9 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               )
-            ],
-          )
-        ],
-      ),
+                  ],
+          ),
+        ),
     );
   }
   Future signIn( )async{
@@ -224,7 +230,6 @@ class _LoginState extends State<Login> {
           },
         );
       }
-
     } on FirebaseAuthException catch(e){
       print(e);
     }

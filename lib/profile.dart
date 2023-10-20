@@ -34,11 +34,16 @@ class Profile extends StatelessWidget {
   }
 }
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   final User user;
 
   UserProfileScreen({required this.user});
 
+  @override
+  _UserProfileScreenState createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -51,32 +56,56 @@ class UserProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20),
-            CircleAvatar(
-              radius: 70,
-              backgroundImage: AssetImage(user.imageUrl),
+        SizedBox(height: 80),
+        Center(
+          child: Container(
+            margin: EdgeInsets.all(15),
+            padding: EdgeInsets.all(30),
+            width: 300,
+            height: 400,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(200, 5, 88, 106),
+                  blurRadius: 30,
+                  offset: Offset(0, 10),
+                )
+              ],
             ),
-            SizedBox(height: 20),
-            Text(
-              user.name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 20),
+                CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage(widget.user.imageUrl),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  widget.user.name,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  widget.user.email,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      Navigator.pushNamed(context, '/editProfile');
+                    });
+                  },
+                  child: Text('Edit Profile'),
+                ),
+              ],
             ),
-            SizedBox(height: 10),
-            Text(
-              user.email,
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/editProfile');
-              },
-              child: Text('Edit Profile'),
-            ),
-          ],
+          ),
         )
       ],
     );

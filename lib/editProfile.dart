@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class User {
   String name;
-  String email;
+  String age;
   String imageUrl;
 
   User({
     required this.name,
-    required this.email,
+    required this.age,
     required this.imageUrl,
   });
 }
@@ -15,8 +15,8 @@ class User {
 class EditProfile extends StatelessWidget {
   final User user = User(
     name: 'John Doe',
-    email: 'johndoe@example.com',
-    imageUrl: 'assets/introScreen1.jpg',
+    age: 'johndoe@example.com',
+    imageUrl: 'assets/testUser.jpg',
   );
 
   EditProfile({super.key});
@@ -28,6 +28,7 @@ class EditProfile extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Edit Profile'),
+          backgroundColor: Color.fromARGB(200, 5, 88, 106),
         ),
         body: EditUserProfileScreen(user: user),
       ),
@@ -46,19 +47,19 @@ class EditUserProfileScreen extends StatefulWidget {
 
 class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   late TextEditingController nameController;
-  late TextEditingController emailController;
+  late TextEditingController ageController;
 
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController(text: widget.user.name);
-    emailController = TextEditingController(text: widget.user.email);
+    ageController = TextEditingController(text: widget.user.age);
   }
 
   @override
   void dispose() {
     nameController.dispose();
-    emailController.dispose();
+    ageController.dispose();
     super.dispose();
   }
 
@@ -82,20 +83,18 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
           ),
           SizedBox(height: 10),
           TextField(
-            controller: emailController,
+            controller: ageController,
             decoration: InputDecoration(
-              labelText: 'Email',
+              labelText: 'age',
             ),
           ),
           SizedBox(height: 20),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
             onPressed: () {
-              // Save the updated user profile
               widget.user.name = nameController.text;
-              widget.user.email = emailController.text;
-              // Implement the logic to save this data to your storage or API
-              // You can also navigate back to the user profile screen.
-              Navigator.pop(context);
+              widget.user.age = ageController.text;
+              //Navigator.pop(context);
             },
             child: Text('Save Changes'),
           ),

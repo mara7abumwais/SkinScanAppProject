@@ -42,7 +42,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
             child: Column(
               children: [
                 Text('An email has been sent to ${user!.email} please verify',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     )),

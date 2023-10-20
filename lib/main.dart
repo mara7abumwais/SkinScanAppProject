@@ -66,10 +66,8 @@ class MyApp extends StatelessWidget {
               //   }
               else {
                 return Login();
-
               }
-            }
-        ),
+            }),
         '/tabNavigation': (BuildContext ctx) =>TabNavigation(0),
         '/scan':(BuildContext ctx) => CameraWidget(),
         '/scanResult':(BuildContext ctx) => ScanResultWidget(dermatosisName: 'x', percentage: 90, clinics: "c1,c2", treatment: "t1"),
@@ -83,7 +81,6 @@ class MyApp extends StatelessWidget {
         '/contactUs':(BuildContext ctx)=> ContactUsPage(),
         '/aboutUs':(BuildContext ctx)=> const AboutUsPage(),
         '/verify':(BuildContext ctx)=>  VerifyScreen(),
-
       },
     );
   }
