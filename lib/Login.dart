@@ -232,6 +232,14 @@ class _LoginState extends State<Login> {
       }
     } on FirebaseAuthException catch(e){
       print(e);
+       Navigator.of(context).pop();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message!),
+            backgroundColor: Colors.red,
+          ),
+        );
     }
 
   }
