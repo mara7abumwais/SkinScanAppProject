@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'user_singleton.dart';
 
 
 class Settings extends StatefulWidget {
@@ -12,17 +14,19 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  String username = '';
+  final user = UserSingleton().user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    String firstName = user.fname;
+    String lastName = user.lname;
+    username = firstName + " " + lastName;
+  }
   @override
   Widget build(BuildContext context) {
-
-    try {
-      final user = FirebaseAuth.instance.currentUser!;
-      print(user);
-    } catch (error) {
-      print(error);
-    }
-
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -33,21 +37,20 @@ class _SettingsState extends State<Settings> {
             children: [
               const CircleAvatar(
                 backgroundImage: AssetImage('assets/testUser.jpg'),
-                radius: 20,
+                radius: 30,
+
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child:const Center(
-                  child: Text(
-                    'Dalal Zakarneh',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20),
+                child: Center(child: Text(
+                  username,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
                   ),
                 ),
-              ),
-
+              ),),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child:const Center(
@@ -63,7 +66,9 @@ class _SettingsState extends State<Settings> {
                 items: [
                   SettingsItem(
                     onTap: () {
-                      Navigator.pushNamed(context, '/editProfile');
+                      setState(() {
+                        Navigator.pushNamed(context, '/editProfile');
+                      });
                     },
                     icons: CupertinoIcons.person_crop_circle_fill,
                     iconStyle: IconStyle(

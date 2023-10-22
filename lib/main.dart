@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
             }),
         '/tabNavigation': (BuildContext ctx) =>TabNavigation(0),
         '/scan':(BuildContext ctx) => CameraWidget(),
-        '/scanResult':(BuildContext ctx) => ScanResultWidget(dermatosisName: 'x', percentage: 90, clinics: "c1,c2", treatment: "t1"),
+       // '/scanResult':(BuildContext ctx) => ScanResultWidget(dermatosisName: 'x', percentage: 0, clinics: "c1,c2", treatment: "t1", imageFile: null,),
         '/forgetPassword':(BuildContext ctx) => ForgotPassword(),
         '/records':(BuildContext ctx) => Records(),
         '/createPassword':(BuildContext ctx) => CreatePassword(),

@@ -41,12 +41,12 @@ dependencies:
   firebase_auth: ^4.6.3
   http: ^1.0.0
   babstrap_settings_screen : 0.1.6
-  camera: ^0.10.5+5
   google_sign_in: ^6.1.4
   firebase_core: ^2.18.0
   cloud_firestore: ^4.10.0
   email_validator: ^2.0.1
   image_picker: ^1.0.4
+  image: ^4.1.3
 
 
 

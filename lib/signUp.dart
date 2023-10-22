@@ -83,7 +83,7 @@ class _signUpState extends State<signUp> {
                               decoration: const InputDecoration(
                                 hintText: "User Name",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                TextStyle(color: Colors.grey, fontSize: 12),
                                 prefixIcon: Icon(Icons.person),
                               ),
                             ),
@@ -98,7 +98,7 @@ class _signUpState extends State<signUp> {
                               decoration: InputDecoration(
                                 hintText: "Last Name",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                TextStyle(color: Colors.grey, fontSize: 12),
                                 prefixIcon: Icon(Icons.person),
                               ),
                             ),
@@ -112,7 +112,7 @@ class _signUpState extends State<signUp> {
                               decoration: const InputDecoration(
                                 hintText: "Age",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                TextStyle(color: Colors.grey, fontSize: 12),
                                 prefixIcon: Icon(Icons.person),
                               ),
                             ),
@@ -124,16 +124,16 @@ class _signUpState extends State<signUp> {
                             child: TextFormField(
                               controller: emailcontroller,
                               autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              AutovalidateMode.onUserInteraction,
                               validator: (email) => email != null &&
-                                      !EmailValidator.validate(email)
+                                  !EmailValidator.validate(email)
                                   ? 'enter a valid email'
                                   : null,
                               style: TextStyle(color: Colors.black),
                               decoration: const InputDecoration(
                                 hintText: "Email address",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey, fontSize: 10),
+                                TextStyle(color: Colors.grey, fontSize: 10),
                                 prefixIcon: Icon(Icons.email),
                               ),
                             ),
@@ -144,16 +144,16 @@ class _signUpState extends State<signUp> {
                             child: TextFormField(
                               controller: passwordcontroller,
                               autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              AutovalidateMode.onUserInteraction,
                               validator: (value) =>
-                                  value != null && value.length < 6
-                                      ? 'enter min. 6 characters'
-                                      : null,
+                              value != null && value.length < 6
+                                  ? 'enter min. 6 characters'
+                                  : null,
                               style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
                                 hintText: "Password",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                TextStyle(color: Colors.grey, fontSize: 12),
                                 prefixIcon: Icon(Icons.lock),
                                 suffixIcon: IconButton(
                                   icon: Icon(_showPassword
@@ -179,7 +179,7 @@ class _signUpState extends State<signUp> {
                               decoration: InputDecoration(
                                 hintText: "Confirm Password",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                TextStyle(color: Colors.grey, fontSize: 12),
                                 prefixIcon: Icon(Icons.lock),
                                 suffixIcon: IconButton(
                                   icon: Icon(_showPassword
@@ -209,7 +209,7 @@ class _signUpState extends State<signUp> {
                               decoration: const InputDecoration(
                                 hintText: "City",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
+                                TextStyle(color: Colors.grey, fontSize: 12),
                                 prefixIcon: Icon(Icons.location_on),
                               ),
                             ),
@@ -233,9 +233,9 @@ class _signUpState extends State<signUp> {
                           borderRadius: BorderRadius.circular(50.0),
                           color: Color.fromARGB(200, 5, 88, 106)),
                       margin:
-                          EdgeInsets.symmetric(horizontal: 85, vertical: 30),
+                      EdgeInsets.symmetric(horizontal: 85, vertical: 30),
                       padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                      EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(color: Colors.white, fontSize: 18),
@@ -253,9 +253,9 @@ class _signUpState extends State<signUp> {
                     },
                     child: const Center(
                         child: Text(
-                      "Have an account ? Login",
-                      style: TextStyle(color: Color.fromARGB(200, 5, 88, 106)),
-                    )),
+                          "Have an account ? Login",
+                          style: TextStyle(color: Color.fromARGB(200, 5, 88, 106)),
+                        )),
                   ),
                   const SizedBox(
                     height: 30,
@@ -308,12 +308,15 @@ class _signUpState extends State<signUp> {
   }
 
   Future addUserDetails() async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+
     await FirebaseFirestore.instance.collection('users').add({
       'firstname': fnamecontroller.text.trim(),
-      'lasttname': lnamecontroller.text.trim(),
+      'lastname': lnamecontroller.text.trim(),
       'age': int.parse(agecontroller.text.trim()),
       'email': emailcontroller.text.trim(),
       'city': citycontroller.text.trim(),
+      'id':uid
     });
   }
 }

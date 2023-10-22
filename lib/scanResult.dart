@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 class ScanResultWidget extends StatelessWidget {
@@ -5,12 +6,14 @@ class ScanResultWidget extends StatelessWidget {
   final double percentage;
   final String clinics;
   final String treatment;
+  final File? imageFile;
 
   ScanResultWidget({
     required this.dermatosisName,
     required this.percentage,
     required this.clinics,
     required this.treatment,
+    required this.imageFile
   });
 
   @override
@@ -18,11 +21,24 @@ class ScanResultWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Scan Result'),
+        backgroundColor: Color.fromARGB(200, 5, 88, 106),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            if (imageFile != null)
+              Container(
+                width: 640,
+                height: 400,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white24,
+                  border: Border.all(width: 8, color: Colors.black38),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Image.file(imageFile!),
+              ),
             Text(
               'Dermatosis Name: $dermatosisName',
               style: TextStyle(fontSize: 20),
@@ -42,19 +58,18 @@ class ScanResultWidget extends StatelessWidget {
               'Treatment: $treatment',
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 20),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor:Color.fromARGB(200, 5, 88, 106)),
               onPressed: () {
-                // Navigate to the screen for a new scan
                 Navigator.of(context).pop();
               },
               child: Text('New Scan'),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor:Color.fromARGB(200, 5, 88, 106)),
               onPressed: () {
-                // Navigate to the chatbot screen
-                // Replace 'ChatbotScreen' with the actual screen where you implement the chatbot functionality
                 Navigator.pushNamed(context, '/Chatbot');
               },
               child: Text('Talk to Chatbot'),
@@ -66,10 +81,3 @@ class ScanResultWidget extends StatelessWidget {
   }
 }
 
-
-void main() => runApp(MaterialApp(home: ScanResultWidget(
-  dermatosisName: 'Sample Dermatosis',
-  percentage: 85.5,
-  clinics: 'Sample Clinics',
-  treatment: 'Sample Treatment',
-)));

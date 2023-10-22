@@ -26,40 +26,58 @@ class _ChatBodyState extends State<ChatBody> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            body: Container(
-              width: maxWidth,
-              margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                children: <Widget>[
-                  Flexible(
-                    child:  ListView.builder(
-                      padding:  EdgeInsets.only(top:10.0,bottom: 10.0),
-                      reverse : true,
-                      itemBuilder: (_,int index) => message_list[index],
-                      itemCount: message_list.length,
+            body:Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white60,
+                    image: DecorationImage(
+                      opacity: 0.5,
+                      image: AssetImage('assets/chatbot.jpg'),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  Divider(color: const Color.fromARGB(255, 64, 255, 239),height: 1.0,),
-                  Container(
-                    child:  Container(child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: TextField(
-                            decoration: InputDecoration(hintText: "Message",),
-                            controller: textController,
-                            onSubmitted: button_sent,
-                          ),
+                ),
+                SizedBox(height: 80),
+                Container(
+                  width: maxWidth,
+                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Flexible(
+                        child:  ListView.builder(
+                          padding:  EdgeInsets.only(top:10.0,bottom: 10.0),
+                          reverse : true,
+                          itemBuilder: (_,int index) => message_list[index],
+                          itemCount: message_list.length,
                         ),
-                        IconButton(
-                          icon: Icon(Icons.send),onPressed:()=> button_sent(textController.text),
+                      ),
+                      Divider(color: const Color.fromARGB(255, 64, 255, 239),height: 1.0,),
+                      Container(
+                        child:  Container(
+                          color: Colors.white,
+                          child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: TextField(
+                                decoration: InputDecoration(hintText: "Message",),
+                                controller: textController,
+                                onSubmitted: button_sent,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.send,color: Color.fromARGB(200, 5, 88, 106),),onPressed:()=> button_sent(textController.text),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )));
+                )
+              ],
+            ))
+    );
   }
 }
 
@@ -74,21 +92,20 @@ class ChatMessage extends StatelessWidget {
       child: Row(crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
 
-          Padding(padding: const EdgeInsets.only(right: 16.0),),
+          const Padding(padding: const EdgeInsets.only(right: 16.0),),
           Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("User",style: TextStyle(fontSize: 10.0,color:  Color.fromARGB(200, 5, 88, 106),),),
-              Padding(padding: const EdgeInsets.only(top: 5.0),),
+              const Text("User",style: TextStyle(fontSize: 10.0,color:  Color.fromARGB(200, 5, 88, 106),fontWeight: FontWeight.bold),),
+              const Padding(padding: const EdgeInsets.only(top: 5.0),),
               ClipRect(
                 child: Container(
                   padding: EdgeInsets.all(10),
                   constraints: BoxConstraints(maxWidth: 500.0),
                   decoration:  BoxDecoration(
                     color: Color.fromARGB(150, 5, 88, 106),
-
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: Text(text),),
+                  child: Text(text,style: TextStyle(fontWeight: FontWeight.bold),),),
               )
 
             ],
@@ -98,3 +115,7 @@ class ChatMessage extends StatelessWidget {
     );
   }
 }
+
+
+
+

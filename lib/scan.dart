@@ -1,10 +1,13 @@
 import 'dart:io';
-
+import 'package:firstseniorproject/scanResult.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
+
 
 class CameraWidget extends StatefulWidget {
+  const CameraWidget({super.key});
+
   @override
   _CameraWidgetState createState() => _CameraWidgetState();
 }
@@ -13,30 +16,56 @@ class _CameraWidgetState extends State<CameraWidget> {
 
   File? imageFile;
 
-  Future getImageFromCamera() async{
-    final file = await ImagePicker().pickImage(source: ImageSource.camera,
-    );
-    if(imageFile == null)
-      return;
-    setState(() {
-      imageFile = File(file!.path);
-    });
+  pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final XFile? xFile = await picker.pickImage(source: source, imageQuality: 85);
+
+    if (xFile != null) {
+      final File imageFile = File(xFile.path);
+
+      final int fileSizeKB = (await imageFile.length()) ~/ 1024; // File size in KB
+
+      if (fileSizeKB < 200) {
+        // Show a SnackBar if the file size is less than 200KB
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Image quality is not sufficient. Please choose a higher-quality image.'),
+          ),
+        );
+        setState(() {
+          this.imageFile = null;
+        });
+      } else {
+        final img.Image? originalImage = img.decodeImage(imageFile.readAsBytesSync());
+
+        if (originalImage != null) {
+          final img.Image resizedImage = img.copyResize(originalImage, width: 200, height: 200);
+          final File resizedFile = File(imageFile.path)
+            ..writeAsBytesSync(img.encodePng(resizedImage));
+
+          setState(() {
+            this.imageFile = resizedFile;
+          });
+        }
+      }
+    } else {
+      setState(() {
+        this.imageFile = null;
+      });
+    }
   }
 
-  Future getImageFromGallery() async{
-    final file = await ImagePicker().pickImage(source: ImageSource.gallery,
-    );
-    if(imageFile == null)
-      return;
-    setState(() {
-      imageFile = File(file!.path);
+/*
+pickImage(ImageSource source)
+  {
+    AppImagePicker(source: source).pick(onPick: (File? imageFile)
+    {
+       setState(() {
+         this.imageFile = imageFile;
+       });
     });
   }
-
-  @override
-  void initState() {
-    super.initState();}
-
+ */
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,21 +77,17 @@ class _CameraWidgetState extends State<CameraWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (imageFile != null)
-                  /*Container(
+                  Container(
                   width: 640,
                   height: 400,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.white24,
-                    image: DecorationImage(
-                      image: FileImage(imageFile!),
-                      fit: BoxFit.cover,
-                    ),
                     border: Border.all(width: 8, color: Colors.black38),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                )*/
-                    Image.file(imageFile!)
+                    child: Image.file(imageFile!),
+                )
                   else
                     Container(
                       width: 640,
@@ -81,7 +106,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                       Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
-                            onPressed: ()=> getImageFromCamera(),
+                            onPressed: ()=> pickImage(ImageSource.camera),
                             child: const Text('Capture Image'),
                           )
                       ),
@@ -89,7 +114,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                       Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
-                            onPressed: ()=> getImageFromGallery(),
+                            onPressed: ()=> pickImage(ImageSource.gallery),
                             child: const Text('Select Image'),
                           )
                       )
@@ -106,7 +131,18 @@ class _CameraWidgetState extends State<CameraWidget> {
                                 const SnackBar(content: Text('Please upload image first'))
                               );
                             }else{
-                            Navigator.pushNamed(context, 'scanResult');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScanResultWidget(
+                                  dermatosisName: 'Eczema',
+                                  percentage: 90,
+                                  clinics: "Jenin Clinic, Nablus Clinic",
+                                  treatment: "treatment 1",
+                                  imageFile: imageFile,
+                                ),
+                              ),
+                            );
                           }
                         },
                         child: const Text('Scan Image'),
@@ -118,5 +154,26 @@ class _CameraWidgetState extends State<CameraWidget> {
         )
     );
   }
-
 }
+
+/*
+class AppImagePicker{
+  ImageSource source;
+
+  AppImagePicker({required this.source});
+
+  pick({onPick})async
+  {
+    final ImagePicker picker = ImagePicker();
+    final image =  await picker.pickImage(source: source,imageQuality: 90);
+
+    if(image != null)
+      {
+        onPick(File(image.path));
+      }
+    else
+      {
+        onPick(null);
+      }
+  }
+}*/
