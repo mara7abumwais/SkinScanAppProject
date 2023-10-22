@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Clinics extends StatefulWidget {
   const Clinics({Key? key}) : super(key: key);
@@ -19,12 +21,36 @@ class _ClinicsState extends State<Clinics> {
   ];
   int selectedTab = 0;
   List<String> clinics = [];
+  
+    //List<DocumentSnapshot> clinicss = [];
+
 
   @override
   void initState() {
     super.initState();
     clinics = tabList1[0]['clinics']!;
+        //fetchClinics();
+
   }
+//   Future<void> fetchClinics() async {
+//     try {
+//       final querySnapshot =
+//           await FirebaseFirestore.instance.collection('clinics').get();
+//       setState(() {
+//         clinicss = querySnapshot.docs;
+//       });
+//       for (var clinicSnapshot in clinicss) {
+// Map<String, dynamic>? clinicData = clinicSnapshot.data() as Map<String, dynamic>?;  
+//   String clinicName = clinicData!['clinicName'];
+//   String clinicLocation = clinicData['location'];
+//   print(clinicLocation);
+
+// }
+//     } catch (error) {
+//       // Handle error
+//       print('Error fetching clinics: $error');
+//     }
+//   }
 
   @override
   Widget build(BuildContext context) {
