@@ -50,7 +50,7 @@ class _SettingsState extends State<Settings> {
                     fontSize: 20,
                   ),
                 ),
-              ),),
+                ),),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child:const Center(

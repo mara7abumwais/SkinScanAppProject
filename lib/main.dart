@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light
       ),
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext ctx) => MyAnimation(),
+        '/': (BuildContext ctx) => Login(),
         '/signUp': (BuildContext ctx) =>StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
           if(snapshot.hasData){

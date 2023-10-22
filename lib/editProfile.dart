@@ -1,25 +1,18 @@
+
+
+
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'user_singleton.dart';
 
-class User {
-  String name;
-  String age;
-  String imageUrl;
+class EditProfile extends StatefulWidget {
+  EditProfile({Key? key}) : super(key: key);
 
-  User({
-    required this.name,
-    required this.age,
-    required this.imageUrl,
-  });
+  @override
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class EditProfile extends StatelessWidget {
-  final User user = User(
-    name: 'John Doe',
-    age: 'johndoe@example.com',
-    imageUrl: 'assets/testUser.jpg',
-  );
-
-  EditProfile({super.key});
+class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
@@ -30,37 +23,46 @@ class EditProfile extends StatelessWidget {
           title: Text('Edit Profile'),
           backgroundColor: Color.fromARGB(200, 5, 88, 106),
         ),
-        body: EditUserProfileScreen(user: user),
+        body: EditUserProfileScreen(),
       ),
     );
   }
 }
 
 class EditUserProfileScreen extends StatefulWidget {
-  final User user;
+  // final User? user;
 
-  EditUserProfileScreen({required this.user});
+  EditUserProfileScreen({Key? key, }) : super(key: key);
 
   @override
   _EditUserProfileScreenState createState() => _EditUserProfileScreenState();
 }
 
 class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
-  late TextEditingController nameController;
-  late TextEditingController ageController;
+  final fnamecontroller = TextEditingController();
+  final lnamecontroller = TextEditingController();
+  final agecontroller = TextEditingController();
+  final citycontroller = TextEditingController();
+  User? user = UserSingleton().user;
+
+  late String userId ;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.user.name);
-    ageController = TextEditingController(text: widget.user.age);
-  }
+    if (user != null) {
+  userId = user!.id;
+  // String firstName = user!.fname;
+  // String lastName = user!.lname;
+  // String city = user!.city;
+  // int age = user!.age;
+  fnamecontroller.text = user!.fname;
+      lnamecontroller.text = user!.lname;
+      agecontroller.text = user!.age.toString();
+     citycontroller.text = user!.city;
 
-  @override
-  void dispose() {
-    nameController.dispose();
-    ageController.dispose();
-    super.dispose();
+  // Use the user data as needed
+}
   }
 
   @override
@@ -72,28 +74,40 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
         children: <Widget>[
           CircleAvatar(
             radius: 70,
-            backgroundImage: AssetImage(widget.user.imageUrl),
+            // backgroundImage: AssetImage(widget.user.imageUrl),
           ),
           SizedBox(height: 20),
           TextField(
-            controller: nameController,
+            controller: fnamecontroller,
             decoration: InputDecoration(
-              labelText: 'Name',
+              labelText: 'First Name',
+            ),
+          ),
+          TextField(
+            controller: lnamecontroller,
+            decoration: InputDecoration(
+              labelText: 'Last Name',
             ),
           ),
           SizedBox(height: 10),
           TextField(
-            controller: ageController,
+            controller: agecontroller,
             decoration: InputDecoration(
-              labelText: 'age',
+              labelText: 'Age',
+            ),
+          ),
+          TextField(
+            controller: citycontroller,
+            decoration: InputDecoration(
+              labelText: 'City',
             ),
           ),
           SizedBox(height: 20),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(200, 5, 88, 106)),
             onPressed: () {
-              widget.user.name = nameController.text;
-              widget.user.age = ageController.text;
+              updateUserInformation(userId);
               //Navigator.pop(context);
             },
             child: Text('Save Changes'),
@@ -101,5 +115,24 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
         ],
       ),
     );
+  }
+
+  void updateUserInformation(String userId) async {
+    try {
+      Map<String, dynamic> updatedData = {
+        'age': int.parse(agecontroller.text.trim()),
+        'city': citycontroller.text.trim(),
+        'firstname': fnamecontroller.text.trim(),
+        'lastname': lnamecontroller.text.trim(),
+      };
+      CollectionReference userCollection =
+          FirebaseFirestore.instance.collection('users');
+
+      await userCollection.doc(userId).update(updatedData);
+
+      print('User information updated in Firestore.');
+    } catch (e) {
+      print('Error updating user information: $e');
+    }
   }
 }

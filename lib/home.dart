@@ -66,8 +66,8 @@ class _homeState extends State<home> {
                     image: AssetImage('assets/home.jpg'),
                     fit: BoxFit.cover,
                   ),
+                ),
               ),
-            ),
               SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,9 +106,9 @@ class _homeState extends State<home> {
                               )
                             ],
                           ),
+                        ),
                       ),
                     ),
-                  ),
                     Center(
                       child: Container(
                         margin: EdgeInsets.all(15),
@@ -148,29 +148,29 @@ class _homeState extends State<home> {
                             ElevatedButton.icon(
                               onPressed: () {
                                 setState(() {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TabNavigation(3),
-                                      ),
-                                    );
-                                  });
-                                },
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TabNavigation(3),
+                                    ),
+                                  );
+                                });
+                              },
                               icon: Icon(Icons.chat),
                               label: Text('Use Chatbot'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                 Color.fromARGB(200, 5, 88, 106),
                                 minimumSize: Size(200, 60),
-                                ),
                               ),
-                              SizedBox(height: 20,),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: 20,),
+                          ],
                         ),
-                        //هون بنفحص اذا ما في ريكورد ما بنعرض هاي القائمة كلها
-                        //بنعرض العيادات
-                        /*Row(
+                      ),
+                      //هون بنفحص اذا ما في ريكورد ما بنعرض هاي القائمة كلها
+                      //بنعرض العيادات
+                      /*Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('Last Record:',style: TextStyle(color: Color.fromARGB(200, 5, 88, 106) ,fontSize: 14),),
@@ -224,12 +224,12 @@ class _homeState extends State<home> {
                             trailing: Text('Date: 2023-8-16'),
                           ),
                         ),*/
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        )
+            ],
+          )
       ),
     );
   }
