@@ -20,11 +20,11 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-
     String firstName = user.fname;
     String lastName = user.lname;
     username = firstName + " " + lastName;
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,8 +36,8 @@ class _SettingsState extends State<Settings> {
           child: ListView(
             children: [
               Container(
-                width: 60, // Adjust the size as needed
-                height: 60, // Adjust the size as needed
+                width: 60,
+                height: 60,
                 decoration:const BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
@@ -50,7 +50,7 @@ class _SettingsState extends State<Settings> {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Center(child: Text(
                   username,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
                     fontSize: 20,

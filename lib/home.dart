@@ -14,20 +14,20 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-
-  //late String imagePath;
-  //late String userId;
+   bool isLogged  = false;
+  String imagePath = "";
+  late String userId;
 
   @override
   void initState() {
     super.initState();
     getUserData();
-//    _loadLocalImagePath();
+    _loadLocalImagePath();
   }
 
   Future getUserData() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-  //  userId = uid!;
+      userId = uid!;
     try {
       QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
           .instance
@@ -49,8 +49,10 @@ class _homeState extends State<home> {
           email: userData['email'],
         );
         UserSingleton().user = loggedInUser;
+        setState(() {
+          isLogged = true;
+        });
       } else {
-        // User document does not exist
         print('User not found');
       }
     } catch (e) {
@@ -65,7 +67,8 @@ class _homeState extends State<home> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           backgroundColor: Colors.white,
-          body: Stack(
+          body: isLogged?
+          Stack(
             children: [
               Container(
                 decoration: const BoxDecoration(
@@ -98,14 +101,14 @@ class _homeState extends State<home> {
                             borderRadius: BorderRadius.circular(20),
                             color: Color.fromARGB(200, 5, 88, 106),
                           ),
-                          child: const  Row(
+                          child:   Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               CircleAvatar(
-                                backgroundImage: AssetImage('assets/testUser.jpg'),
+                                backgroundImage: _buildProfileImage(),
                                 radius: 25,
                               ),
-                               Text('My Medical Profile', style: TextStyle(color: Colors.white, fontSize: 20),)
+                              Text('My Medical Profile', style: TextStyle(color: Colors.white, fontSize: 20),)
                             ],
                           ),
                         ),
@@ -176,12 +179,14 @@ class _homeState extends State<home> {
               ),
             ],
           )
+              :
+              const Center(child: CircularProgressIndicator(),)
       ),
     );
   }
-  /*ImageProvider<Object> _buildProfileImage() {
-    if (imagePath != null) {
-      return FileImage(File(imagePath!)); // Load image from file
+ImageProvider<Object> _buildProfileImage() {
+    if (imagePath != "") {
+      return FileImage(File(imagePath)); // Load image from file
     } else {
       return AssetImage("assets/testUser.jpg"); // Load a default image from assets
     }
@@ -191,5 +196,5 @@ class _homeState extends State<home> {
     setState(() {
       imagePath = prefs.getString('${userId}_image')!;
     });
-  }*/
+  }
 }

@@ -24,7 +24,7 @@ class _ProfileState extends State<Profile> {
   late String city;
   late int age;
   late String email ;
-  late String imagePath;
+  late String imagePath = "";
 
   @override
   void initState() {
@@ -127,7 +127,7 @@ class _ProfileState extends State<Profile> {
   }
 
   ImageProvider<Object> _buildProfileImage() {
-    if (imagePath != null) {
+    if (imagePath != "") {
       return FileImage(File(imagePath!)); // Load image from file
     } else {
       return AssetImage("assets/testUser.jpg"); // Load a default image from assets

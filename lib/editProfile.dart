@@ -45,7 +45,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   User? user = UserSingleton().user;
 
   late String userId ;
-  String? imagePath;
+  String imagePath = "";
   bool hadChanged = false;
   bool isHovering = false;
   @override
@@ -71,7 +71,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
             child: Container(
               width: 150,
               height: 150,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle
               ),
               child: Stack(
@@ -153,25 +153,27 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
 
       if (xFile != null) {
         final File imageFile = File(xFile.path);
-        imagePath = imageFile.path;
+        setState(() {
+          imagePath = imageFile.path;
+        });
         hadChanged = true;
       }
       else {
         setState(() {
-          imagePath = null;
+          imagePath = "";
         });
       }
     }catch(error)
     {
       print(error);
       setState(() {
-        imagePath = null;
+        imagePath = "";
       });
     }
   }
 
   ImageProvider<Object> _buildProfileImage() {
-    if (imagePath != null) {
+    if (imagePath != "") {
       return FileImage(File(imagePath!)); // Load image from file
     } else {
       return AssetImage("assets/testUser.jpg"); // Load a default image from assets
@@ -181,7 +183,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   void _loadLocalImagePath() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      imagePath = prefs.getString('${userId}_image');
+      imagePath = prefs.getString('${userId}_image')!;
     });
   }
 
