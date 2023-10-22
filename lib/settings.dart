@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'user_singleton.dart';
+
 
 
 class Settings extends StatefulWidget {
@@ -12,16 +14,24 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  String username = '';
+  final user = UserSingleton().user;
+  
+
+
+
+void initState() {
+    super.initState();
+   
+  String firstName = user.fname;
+  String lastName = user.lname;
+ username=firstName+" "+lastName;
+
+
+  }
   @override
   Widget build(BuildContext context) {
-
-    try {
-      final user = FirebaseAuth.instance.currentUser!;
-      print(user);
-    } catch (error) {
-      print(error);
-    }
-
+    
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -37,25 +47,24 @@ class _SettingsState extends State<Settings> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child:const Center(
-                  child: Text(
-                    'Dalal Zakarneh',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20),
-                  ),
+                child: Center(child: Text(
+                          username,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                          ),
+                        ),
+                 
                 ),
               ),
 
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child:const Center(
+                child: const Center(
                   child: Text(
                     'Settings',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18),
+                    style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
                 ),
               ),
@@ -76,12 +85,12 @@ class _SettingsState extends State<Settings> {
                   SettingsItem(
                     onTap: () {
                       setState(() {
-                        Navigator.pushNamed(context,'/clinics');
+                        Navigator.pushNamed(context, '/clinics');
                       });
                     },
                     icons:
-                    //CupertinoIcons.rectangle_fill_on_rectangle_angled_fill,
-                    Icons.health_and_safety_outlined,
+                        //CupertinoIcons.rectangle_fill_on_rectangle_angled_fill,
+                        Icons.health_and_safety_outlined,
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
                       withBackground: true,
@@ -152,7 +161,8 @@ class _SettingsState extends State<Settings> {
                     onTap: () {
                       setState(() {
                         FirebaseAuth.instance.signOut();
-                        Navigator.of(context).popUntil((route) => route.settings.name == '/login');
+                        Navigator.of(context).popUntil(
+                            (route) => route.settings.name == '/login');
                       });
                     },
                     icons: Icons.exit_to_app_rounded,
@@ -181,4 +191,3 @@ class _SettingsState extends State<Settings> {
     );
   }
 }
-

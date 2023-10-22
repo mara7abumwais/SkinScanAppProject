@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
-
-class User {
-  final String name;
-  final String email;
-  final String imageUrl;
-
-  User({
-    required this.name,
-    required this.email,
-    required this.imageUrl,
-  });
-}
+import 'user_singleton.dart';
 
 class Profile extends StatelessWidget {
-  final User user = User(
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    imageUrl: 'assets/testUser.jpg',
-  );
-
   @override
   Widget build(BuildContext context) {
+
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -28,16 +13,14 @@ class Profile extends StatelessWidget {
           title: Text('User Profile'),
           backgroundColor: Color.fromARGB(200, 5, 88, 106),
         ),
-        body: UserProfileScreen(user: user),
+        body: UserProfileScreen(),
       ),
     );
   }
 }
 
 class UserProfileScreen extends StatefulWidget {
-  final User user;
-
-  UserProfileScreen({required this.user});
+  UserProfileScreen();
 
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
@@ -46,6 +29,16 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    
+    final user = UserSingleton().user;
+    late String username;
+
+    String firstName = user.fname;
+    String lastName = user.lname;
+    username = firstName + " " + lastName;
+    String city = user.city;
+    int age = user.age;
+    String email = user.email;
     return Stack(
       children: [
         Container(
@@ -79,16 +72,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 SizedBox(height: 20),
                 CircleAvatar(
                   radius: 70,
-                  backgroundImage: AssetImage(widget.user.imageUrl),
+                  // backgroundImage: AssetImage(widget.user.imageUrl),
                 ),
                 SizedBox(height: 20),
                 Text(
-                  widget.user.name,
+                  username,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  widget.user.email,
+                 email,
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 SizedBox(height: 20),
@@ -111,4 +104,3 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 }
-

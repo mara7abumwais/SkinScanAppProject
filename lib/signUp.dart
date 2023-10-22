@@ -308,12 +308,15 @@ class _signUpState extends State<signUp> {
   }
 
   Future addUserDetails() async {
+        String? uid = FirebaseAuth.instance.currentUser?.uid;
+
     await FirebaseFirestore.instance.collection('users').add({
       'firstname': fnamecontroller.text.trim(),
-      'lasttname': lnamecontroller.text.trim(),
+      'lastname': lnamecontroller.text.trim(),
       'age': int.parse(agecontroller.text.trim()),
       'email': emailcontroller.text.trim(),
       'city': citycontroller.text.trim(),
+      'id':uid
     });
   }
 }
