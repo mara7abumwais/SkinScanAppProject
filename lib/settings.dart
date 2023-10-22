@@ -35,10 +35,16 @@ class _SettingsState extends State<Settings> {
           padding: const EdgeInsets.all(10),
           child: ListView(
             children: [
-              const CircleAvatar(
-                backgroundImage: AssetImage('assets/testUser.jpg'),
-                radius: 30,
-
+              Container(
+                width: 60, // Adjust the size as needed
+                height: 60, // Adjust the size as needed
+                decoration:const BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.contain, // Center crop the image
+                    image: AssetImage('assets/testUser.jpg'),
+                  ),
+                ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),

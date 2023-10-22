@@ -1,12 +1,12 @@
-
-
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'user_singleton.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile({Key? key}) : super(key: key);
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -30,9 +30,8 @@ class _EditProfileState extends State<EditProfile> {
 }
 
 class EditUserProfileScreen extends StatefulWidget {
-  // final User? user;
 
-  EditUserProfileScreen({Key? key, }) : super(key: key);
+  const EditUserProfileScreen({Key? key, }) : super(key: key);
 
   @override
   _EditUserProfileScreenState createState() => _EditUserProfileScreenState();
@@ -46,24 +45,20 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
   User? user = UserSingleton().user;
 
   late String userId ;
-
+  String? imagePath;
+  bool hadChanged = false;
+  bool isHovering = false;
   @override
   void initState() {
     super.initState();
     if (user != null) {
-  userId = user!.id;
-  // String firstName = user!.fname;
-  // String lastName = user!.lname;
-  // String city = user!.city;
-  // int age = user!.age;
-  fnamecontroller.text = user!.fname;
-      lnamecontroller.text = user!.lname;
-      agecontroller.text = user!.age.toString();
-     citycontroller.text = user!.city;
-
-  // Use the user data as needed
-}
-  }
+      userId = user!.id;
+       fnamecontroller.text = user!.fname;
+       lnamecontroller.text = user!.lname;
+       agecontroller.text = user!.age.toString();
+       citycontroller.text = user!.city[0].toUpperCase() + user!.city.substring(1);
+       _loadLocalImagePath();
+    }}
 
   @override
   Widget build(BuildContext context) {
@@ -72,20 +67,54 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CircleAvatar(
-            radius: 70,
-            // backgroundImage: AssetImage(widget.user.imageUrl),
+          Center(
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle
+              ),
+              child: Stack(
+                children: [
+                     !isHovering?
+                     CircleAvatar(
+                       radius: 70,
+                       backgroundImage: _buildProfileImage(),)
+                     :const CircleAvatar(
+                          radius: 70,
+                          backgroundColor: Colors.black26,
+                     child: Center(
+                       child: Icon(Icons.photo_outlined,color: Color.fromARGB(200, 5, 88, 106),),
+                     ),),
+                  InkWell(
+                    hoverColor: Colors.transparent,
+                    onTap: ()
+                    {
+                      setState(() {
+                        _changeProfilePhoto();
+                        print('marah');
+                      });
+                    },
+                    onHover: (event)
+                    {
+                      setState(() {
+                        isHovering = event;
+                      });
+                    },),
+                ],
+              ),
+            )
           ),
           SizedBox(height: 20),
           TextField(
             controller: fnamecontroller,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'First Name',
             ),
           ),
           TextField(
             controller: lnamecontroller,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Last Name',
             ),
           ),
@@ -117,6 +146,50 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     );
   }
 
+  void _changeProfilePhoto() async {
+    try{
+      final picker = ImagePicker();
+      final XFile? xFile = await picker.pickImage(source: ImageSource.gallery);
+
+      if (xFile != null) {
+        final File imageFile = File(xFile.path);
+        imagePath = imageFile.path;
+        hadChanged = true;
+      }
+      else {
+        setState(() {
+          imagePath = null;
+        });
+      }
+    }catch(error)
+    {
+      print(error);
+      setState(() {
+        imagePath = null;
+      });
+    }
+  }
+
+  ImageProvider<Object> _buildProfileImage() {
+    if (imagePath != null) {
+      return FileImage(File(imagePath!)); // Load image from file
+    } else {
+      return AssetImage("assets/testUser.jpg"); // Load a default image from assets
+    }
+  }
+
+  void _loadLocalImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imagePath = prefs.getString('${userId}_image');
+    });
+  }
+
+  void _saveLocalImagePath(String path) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('${userId}_image', path);
+  }
+
   void updateUserInformation(String userId) async {
     try {
       Map<String, dynamic> updatedData = {
@@ -127,12 +200,17 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
       };
       CollectionReference userCollection =
           FirebaseFirestore.instance.collection('users');
-
       await userCollection.doc(userId).update(updatedData);
-
-      print('User information updated in Firestore.');
+       ScaffoldMessenger.of(context).showSnackBar(
+         const SnackBar(content: Text("Changes Saved"))
+       );
+      if (imagePath != null && hadChanged == true) {
+        _loadLocalImagePath();
+        _saveLocalImagePath(imagePath!);
+      }
+       print('User information updated in Firestore.');
     } catch (e) {
-      print('Error updating user information: $e');
+       print('Error updating user information: $e');
     }
   }
 }

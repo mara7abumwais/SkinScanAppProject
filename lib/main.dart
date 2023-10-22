@@ -27,7 +27,6 @@ Future< void> main() async {
 }
 final NavigatorKey=GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
-  // This widget is the root of my application.
   @override
 
   Widget build(BuildContext context) {
@@ -46,10 +45,8 @@ class MyApp extends StatelessWidget {
             return VerifyScreen();
           } else {
             return signUp();
-
           }
-
-        }),
+            }),
         '/introScreen': (BuildContext ctx) => IntroScreen(),
         '/login':(BuildContext ctx)=>StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),

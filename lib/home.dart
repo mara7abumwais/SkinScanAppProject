@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:firstseniorproject/TabNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'user_singleton.dart';
 
 class home extends StatefulWidget {
@@ -12,14 +14,20 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+
+  //late String imagePath;
+  //late String userId;
+
+  @override
   void initState() {
     super.initState();
-    // Call getUserData when the page is opened
     getUserData();
+//    _loadLocalImagePath();
   }
 
   Future getUserData() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
+  //  userId = uid!;
     try {
       QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
           .instance
@@ -40,7 +48,6 @@ class _homeState extends State<home> {
           age: userData['age'],
           email: userData['email'],
         );
-
         UserSingleton().user = loggedInUser;
       } else {
         // User document does not exist
@@ -91,19 +98,14 @@ class _homeState extends State<home> {
                             borderRadius: BorderRadius.circular(20),
                             color: Color.fromARGB(200, 5, 88, 106),
                           ),
-                          child: const Row(
+                          child: const  Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               CircleAvatar(
-                                backgroundImage:
-                                AssetImage('assets/testUser.jpg'),
+                                backgroundImage: AssetImage('assets/testUser.jpg'),
                                 radius: 25,
                               ),
-                              Text(
-                                'My Medical Profile',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              )
+                               Text('My Medical Profile', style: TextStyle(color: Colors.white, fontSize: 20),)
                             ],
                           ),
                         ),
@@ -168,62 +170,6 @@ class _homeState extends State<home> {
                           ],
                         ),
                       ),
-                      //هون بنفحص اذا ما في ريكورد ما بنعرض هاي القائمة كلها
-                      //بنعرض العيادات
-                      /*Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Last Record:',style: TextStyle(color: Color.fromARGB(200, 5, 88, 106) ,fontSize: 14),),
-                            GestureDetector(
-                                onTap: ()
-                                {
-                                  setState(() {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TabNavigation(1),
-                                      ),
-                                    );
-                                  });
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 10,bottom: 15),
-                                  child: const Row(
-                                    children: [
-                                      Text('See all',style: TextStyle(color: Color.fromARGB(200, 5, 88, 106),fontSize: 12 )),
-                                      Icon(Icons.arrow_forward, color:Color.fromARGB(200, 5, 88, 106),size: 10, ),
-                                    ],
-                                  ),
-                                )
-                            )
-                          ],
-                        ),
-                        Container(
-                          padding:const EdgeInsets.symmetric(vertical: 5),
-                          margin:const EdgeInsets.symmetric(vertical: 13,horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow:const [
-                              BoxShadow(
-                                color: Color.fromARGB(200, 5, 88, 106),
-                                blurRadius: 3,
-                                spreadRadius: 4,
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            leading: Image.asset(
-                              'assets/introScreen1.jpg',
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            ),
-                            title: Text('Dermatosis 1'),
-                            subtitle: Text('Percentage: 60%'),
-                            trailing: Text('Date: 2023-8-16'),
-                          ),
-                        ),*/
                     ),
                   ],
                 ),
@@ -233,4 +179,17 @@ class _homeState extends State<home> {
       ),
     );
   }
+  /*ImageProvider<Object> _buildProfileImage() {
+    if (imagePath != null) {
+      return FileImage(File(imagePath!)); // Load image from file
+    } else {
+      return AssetImage("assets/testUser.jpg"); // Load a default image from assets
+    }
+  }
+  void _loadLocalImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imagePath = prefs.getString('${userId}_image')!;
+    });
+  }*/
 }

@@ -18,14 +18,14 @@ class _CameraWidgetState extends State<CameraWidget> {
 
   pickImage(ImageSource source) async {
     final picker = ImagePicker();
-    final XFile? xFile = await picker.pickImage(source: source, imageQuality: 85);
+    final XFile? xFile = await picker.pickImage(source: source, imageQuality: 70);
 
     if (xFile != null) {
       final File imageFile = File(xFile.path);
 
       final int fileSizeKB = (await imageFile.length()) ~/ 1024; // File size in KB
 
-      if (fileSizeKB < 200) {
+     /* if (fileSizeKB < 200) {
         // Show a SnackBar if the file size is less than 200KB
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -35,7 +35,7 @@ class _CameraWidgetState extends State<CameraWidget> {
         setState(() {
           this.imageFile = null;
         });
-      } else {
+      } else */{
         final img.Image? originalImage = img.decodeImage(imageFile.readAsBytesSync());
 
         if (originalImage != null) {
@@ -55,17 +55,6 @@ class _CameraWidgetState extends State<CameraWidget> {
     }
   }
 
-/*
-pickImage(ImageSource source)
-  {
-    AppImagePicker(source: source).pick(onPick: (File? imageFile)
-    {
-       setState(() {
-         this.imageFile = imageFile;
-       });
-    });
-  }
- */
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'user_singleton.dart';
 
 
@@ -11,19 +14,34 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  final user = UserSingleton().user;
+
+  late String username;
+  late String userId;
+  late String firstName;
+  late String lastName;
+  late String city;
+  late int age;
+  late String email ;
+  late String imagePath;
+
   @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      userId = user.id;
+      firstName = user.fname;
+      lastName= user.lname;
+      age = user.age;
+      city = user.city[0].toUpperCase() + user.city.substring(1);
+      email = user.email;
+      username = firstName + " " + lastName;
+      _loadLocalImagePath();
+    }}
 
+  @override
   Widget build(BuildContext context) {
-    final user = UserSingleton().user;
-    late String username;
-
-    String firstName = user.fname;
-    String lastName = user.lname;
-    username = firstName + " " + lastName;
-    String city = user.city;
-    int age = user.age;
-    String email = user.email;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -47,7 +65,7 @@ class _ProfileState extends State<Profile> {
                 margin: EdgeInsets.all(15),
                 padding: EdgeInsets.all(30),
                 width: 300,
-                height: 400,
+                height: 450,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -64,7 +82,7 @@ class _ProfileState extends State<Profile> {
                     SizedBox(height: 20),
                     CircleAvatar(
                       radius: 70,
-                      //backgroundImage: AssetImage(user.imageUrl),
+                      backgroundImage: _buildProfileImage(),
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -76,7 +94,17 @@ class _ProfileState extends State<Profile> {
                       email,
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
+                    Text(
+                      "Age: "+ age.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "City: "+ city,
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    SizedBox(height: 10),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(200, 5, 88, 106),
@@ -97,5 +125,21 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+  ImageProvider<Object> _buildProfileImage() {
+    if (imagePath != null) {
+      return FileImage(File(imagePath!)); // Load image from file
+    } else {
+      return AssetImage("assets/testUser.jpg"); // Load a default image from assets
+    }
+  }
+  void _loadLocalImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imagePath = prefs.getString('${userId}_image')!;
+    });
+  }
 }
+
+
 
