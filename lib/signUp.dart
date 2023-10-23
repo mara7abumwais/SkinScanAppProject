@@ -23,8 +23,18 @@ class _signUpState extends State<signUp> {
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
   final confpasswordcontroller = TextEditingController();
-
   final citycontroller = TextEditingController();
+
+  String? selectedCity;
+
+  List<String> cities = [
+    'Jenin',
+    'Nablus',
+    'Tulkarm',
+    'Ramallah',
+    'Hebron',
+    'Bethlehem',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -197,21 +207,30 @@ class _signUpState extends State<signUp> {
                           ),
                           Container(
                             padding: EdgeInsets.fromLTRB(25, 0, 25, 15),
-                            child: TextFormField(
-                              controller: citycontroller,
+                            child: DropdownButtonFormField<String>(
+                              value: selectedCity,
+                              items: cities.map((city) {
+                                return DropdownMenuItem<String>(
+                                  value: city,
+                                  child: Text(city),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedCity = value;
+                                });
+                              },
+                              decoration:const InputDecoration(
+                                hintText: "City",
+                                hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                                prefixIcon: Icon(Icons.location_on),
+                              ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'This field is required.';
+                                  return 'Please select a city.';
                                 }
                                 return null;
                               },
-                              style: TextStyle(color: Colors.black),
-                              decoration: const InputDecoration(
-                                hintText: "City",
-                                hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 12),
-                                prefixIcon: Icon(Icons.location_on),
-                              ),
                             ),
                           ),
                         ],
