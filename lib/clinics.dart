@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Clinics extends StatefulWidget {
@@ -10,47 +9,50 @@ class Clinics extends StatefulWidget {
 }
 
 class _ClinicsState extends State<Clinics> {
-  List<String> tabList = ['All Cities', 'Jenin', 'Ramallah', 'Nablus', 'Hebron', 'Tulkarem'];
-  List<Map<String, dynamic>> tabList1 = [
-    {'city': 'All Cities', 'clinics': ['Default Clinic']},
-    {'city': 'Jenin', 'clinics': ['Jenin Clinic 1', 'Jenin Clinic 2']},
-    {'city': 'Ramallah', 'clinics': ['Ramallah Clinic 1', 'Ramallah Clinic 2']},
-    {'city': 'Nablus', 'clinics': ['Nablus Clinic 1', 'Nablus Clinic 2']},
-    {'city': 'Hebron', 'clinics': ['Hebron Clinic 1', 'Hebron Clinic 2']},
-    {'city': 'Tulkarem', 'clinics': ['Tulkarem Clinic 1', 'Tulkarem Clinic 2']},
-  ];
   int selectedTab = 0;
-  List<String> clinics = [];
-  
-    //List<DocumentSnapshot> clinicss = [];
-
+  List<String> tabList = ['All Cities', 'Jenin', 'Ramallah', 'Nablus', 'Hebron', 'Tulkarm', 'Bethlehem'];
+  List<DocumentSnapshot>? clinicss;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    clinics = tabList1[0]['clinics']!;
-        //fetchClinics();
-
+    fetchClinics();
   }
-//   Future<void> fetchClinics() async {
-//     try {
-//       final querySnapshot =
-//           await FirebaseFirestore.instance.collection('clinics').get();
-//       setState(() {
-//         clinicss = querySnapshot.docs;
-//       });
-//       for (var clinicSnapshot in clinicss) {
-// Map<String, dynamic>? clinicData = clinicSnapshot.data() as Map<String, dynamic>?;  
-//   String clinicName = clinicData!['clinicName'];
-//   String clinicLocation = clinicData['location'];
-//   print(clinicLocation);
 
-// }
-//     } catch (error) {
-//       // Handle error
-//       print('Error fetching clinics: $error');
-//     }
-//   }
+  Future<void> fetchClinics() async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance.collection('clinics').get();
+      setState(() {
+        clinicss = querySnapshot.docs;
+      });
+    } catch (error) {
+      print('Error fetching clinics: $error');
+    }
+  }
+
+  List<DocumentSnapshot> getFilteredClinics(String selectedCity) {
+    if (selectedCity == 'All Cities') {
+      return clinicss!;
+    } else {
+      return clinicss!.where((clinic) =>
+      clinic['city'].toString().toLowerCase() == selectedCity.toLowerCase()
+      ).toList();
+    }
+  }
+
+  List<DocumentSnapshot> getFilteredClinicsBySearch(String searchQuery) {
+    if (searchQuery.isEmpty) {
+      return clinicss!;
+    } else {
+      return clinicss!.where((clinic) {
+        final clinicName = clinic['clinicName']?.toString() ?? '';
+        final doctorName = clinic['doctorName']?.toString() ?? '';
+        final lowerCaseQuery = searchQuery.toLowerCase();
+        return clinicName.toLowerCase().contains(lowerCaseQuery) || doctorName.toLowerCase().contains(lowerCaseQuery);
+      }).toList();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +64,11 @@ class _ClinicsState extends State<Clinics> {
           backgroundColor: Color.fromARGB(200, 5, 88, 106),
           actions: const [
             Icon(Icons.notifications),
-            SizedBox(width: 5.0,),
+            SizedBox(width: 5.0),
           ],
         ),
-        body: SingleChildScrollView(
+        body: clinicss != null
+            ? SingleChildScrollView(
           child: Column(
             children: [
               SingleChildScrollView(
@@ -79,14 +82,7 @@ class _ClinicsState extends State<Clinics> {
                       onTap: () {
                         setState(() {
                           selectedTab = index;
-                          if (index == 0) {
-                            clinics = tabList1
-                                .sublist(1)
-                                .expand((city) => city['clinics'] as List<String>)
-                                .toList();
-                          } else {
-                            clinics = tabList1[index]['clinics'] as List<String>;
-                          }
+                          searchController.clear(); // Clear the search bar when changing tabs.
                         });
                       },
                       child: Container(
@@ -121,7 +117,13 @@ class _ClinicsState extends State<Clinics> {
                   border: Border.all(color: Color.fromARGB(200, 5, 88, 106)),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: const TextField(
+                child: TextField(
+                  controller: searchController,
+                  onChanged: (query) {
+                    setState(() {
+                      // Update the filtered list based on the search query.
+                    });
+                  },
                   style: TextStyle(color: Color.fromARGB(200, 5, 88, 106)),
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -129,149 +131,129 @@ class _ClinicsState extends State<Clinics> {
                       Icons.search_sharp,
                       color: Color.fromARGB(200, 5, 88, 106),
                     ),
-                    hintText: 'Search for Products',
+                    hintText: 'Search for Clinics',
                     hintStyle: TextStyle(color: Color.fromARGB(200, 5, 88, 106)),
                   ),
-                  // textFieldType: TextFieldType.NAME,
                   cursorColor: Color.fromARGB(200, 5, 88, 106),
                 ),
               ),
               SizedBox(height: 20),
-              /*Column(
-                children: clinics.map((clinic) {
-                  return Text(
-                    clinic,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
+              clinicss!.isNotEmpty
+                  ? ListView.builder(
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemCount: searchController.text.isEmpty
+                    ? getFilteredClinics(tabList[selectedTab]).length
+                    : getFilteredClinicsBySearch(searchController.text).length,
+                itemBuilder: (context, index) {
+                  final clinic = searchController.text.isEmpty
+                      ? getFilteredClinics(tabList[selectedTab])[index].data() as Map<String, dynamic>
+                      : getFilteredClinicsBySearch(searchController.text)[index].data() as Map<String, dynamic>;
+                  final clinicName = clinic['clinicName'] ?? 'Default Clinic';
+                  final doctorName = clinic['doctorName'] ?? 'Dr. Doctor Name';
+                  final city = clinic['city'] ?? 'City';
+                  final location = clinic['location'] ?? 'Location';
+                  final openingHours = clinic['openingHours'] ?? 'Opening Hours: N/A';
+
+                  return Container(
+                    margin: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color.fromARGB(200, 5, 88, 106),
+                          Color.fromARGB(220, 20, 99, 100),
+                          Color.fromARGB(230, 40, 110, 90),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            doctorName,
+                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white,),
+                          ),
+                          subtitle: Text(clinicName, style: TextStyle(color: Colors.white)),
+                          trailing: const CircleAvatar(radius: 25, backgroundColor: Colors.black26,),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Divider(
+                            thickness: 1,
+                            height: 20,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  openingHours,
+                                  style: const TextStyle(color: Colors.white,),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.access_time_filled, color: Colors.white70,),
+                                SizedBox(width: 5),
+                                Text(
+                                  openingHours,
+                                  style: const TextStyle(color: Colors.white70,),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.location_city, color: Colors.white70,),
+                                SizedBox(width: 5),
+                                Text(
+                                  city,
+                                  style: const TextStyle(color: Colors.white70,),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.location_on, color: Colors.white70,),
+                                SizedBox(width: 5),
+                                Text(
+                                  location,
+                                  style: TextStyle(color: Colors.white70,),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                      ],
                     ),
                   );
-                }).toList(),
-              ),*/
-              SizedBox(height: 15),
-              Container(
-                padding:const EdgeInsets.symmetric(vertical: 5),
-                margin:const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color.fromARGB(200, 5, 88, 106),
-                      Color.fromARGB(220, 20, 99, 100),
-                      Color.fromARGB(230, 40, 110, 90),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow:const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child:const Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          "Dr. Doctor Name",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                          ),
-                        ),
-                        subtitle: Text("Clinic Name",style: TextStyle(color: Colors.white),),
-                        trailing: CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Divider(
-                          // color: Colors.black,
-                          thickness: 1,
-                          height: 20,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Opening Hours:",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.access_time_filled,
-                                color: Colors.white70,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                "10:30 AM - 3:00 ",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_city,
-                                color: Colors.white70,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                "City",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on,
-                                color: Colors.white70,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                "Location",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-                ),
-              ),
+                },
+              )
+                  : const Center(child: Text('No clinics found.')),
             ],
           ),
-        ),
+        )
+            : const Center(child: CircularProgressIndicator()),
       ),
     );
   }
