@@ -9,16 +9,16 @@ class IntroScreen extends StatelessWidget {
 
     return Scaffold(
       body: IntroductionScreen(
-        globalBackgroundColor: Color.fromARGB(200, 5, 88, 106),
+        globalBackgroundColor: Color(0xff519e94),
         scrollPhysics: BouncingScrollPhysics(),
         pages: [
           PageViewModel(
             titleWidget: const Text(
               "Welcome to SkinScan",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.white),
             ),
-            body:
-            "Analyze your skin condition and receive instant results and recommendations.",
+            bodyWidget: const Text('Analyze your skin condition and receive instant results and recommendations.',
+              style: TextStyle(color: Colors.white,fontSize: 18,),),
             image: Image.asset(
               "assets/introScreen1.jpg",
               height: 400,
@@ -28,10 +28,10 @@ class IntroScreen extends StatelessWidget {
           PageViewModel(
             titleWidget: const Text(
               "Track your skin",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.white),
             ),
-            body:
-            "Track your skin condition images regularly.",
+            bodyWidget: const Text('Track your skin condition images regularly.',
+              style: TextStyle(color: Colors.white,fontSize: 18,),),
             image: Image.asset(
               "assets/introScreen3.jpg",
               height: 400,
@@ -41,19 +41,16 @@ class IntroScreen extends StatelessWidget {
           PageViewModel(
             titleWidget: const Text(
               "Your data is safe",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.white),
             ),
-            body:
-            "Store your case files and medical information safely.",
-            image: Image.asset(
-              "assets/introScreen2.jpg",
-              height: 400,
-              width: 400,
-            ),
+            bodyWidget: const Text('Store your case files and medical information safely.',
+              style: TextStyle(color: Colors.white,fontSize: 18,),),
+            image: Image.asset("assets/introScreen2.jpg", height: 400, width: 400,),
           )
         ],
         onDone: () {Navigator.pushNamed(context, '/tabNavigation');},
-        onSkip: () {Navigator.pushNamed(context, '/tabNavigation');},
+        onSkip: () {
+          Navigator.pushNamed(context, '/tabNavigation');},
         showSkipButton: true,
         skip: const Text(
           "Skip",
@@ -88,3 +85,5 @@ class IntroScreen extends StatelessWidget {
     );
   }
 }
+
+

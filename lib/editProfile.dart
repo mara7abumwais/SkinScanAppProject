@@ -21,7 +21,7 @@ class _EditProfileState extends State<EditProfile> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Edit Profile'),
-          backgroundColor: Color.fromARGB(200, 5, 88, 106),
+          backgroundColor: Color(0xff519e94),
         ),
         body: EditUserProfileScreen(),
       ),
@@ -53,12 +53,15 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     super.initState();
     if (user != null) {
       userId = user!.id;
-       fnamecontroller.text = user!.fname;
-       lnamecontroller.text = user!.lname;
-       agecontroller.text = user!.age.toString();
-       citycontroller.text = user!.city[0].toUpperCase() + user!.city.substring(1);
-       _loadLocalImagePath();
-    }}
+      fnamecontroller.text = user!.fname ?? '';
+      lnamecontroller.text = user!.lname ?? '';
+      agecontroller.text = user!.age?.toString() ?? '';
+      citycontroller.text = user!.city.isNotEmpty
+          ? user!.city[0].toUpperCase() + user!.city.substring(1) : '';
+      _loadLocalImagePath();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +87,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
                           radius: 70,
                           backgroundColor: Colors.black26,
                      child: Center(
-                       child: Icon(Icons.photo_outlined,color: Color.fromARGB(200, 5, 88, 106),),
+                       child: Icon(Icons.photo_outlined,color: Color(0xff519e94),),
                      ),),
                   InkWell(
                     hoverColor: Colors.transparent,
@@ -134,7 +137,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
           SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(200, 5, 88, 106)),
+                backgroundColor: Color(0xff519e94)),
             onPressed: () {
               updateUserInformation(userId);
               //Navigator.pop(context);

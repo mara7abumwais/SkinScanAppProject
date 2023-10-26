@@ -18,30 +18,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       child: SingleChildScrollView(child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 30,
-          ),
-          Text(
+          SizedBox(height: 30,),
+          const Text(
             "Reset password",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
+          SizedBox(height: 10,),
+          const Text(
             "Enter the email associated with your account. We will send you an email with instructions to reset your password.",
             style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
+          SizedBox(height: 20,),
+          const Text(
             "Email Address",
             style: TextStyle(fontSize: 15),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10,),
           Container(
             decoration: BoxDecoration(
               border: Border.all(
@@ -56,7 +48,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               validator: (email)=>
               email!=null && !EmailValidator.validate(email)?'enter a valid email':null,
               style: TextStyle(color: Colors.black54),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'someone@example.com',
                 hintStyle: TextStyle(color: Colors.black12),
@@ -64,11 +56,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 20,),
           MaterialButton(
-            color:  Color.fromARGB(255, 5, 88, 106),
+            color:  Color(0xff519e94),
             height: 40,
             minWidth: double.infinity,
             shape: RoundedRectangleBorder(
@@ -82,9 +72,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               resetPassword();
             },
           ),
-          SizedBox(
-            height: 8,
-          ),
+          SizedBox(height: 8,),
         ],
 
       ) ,),)
@@ -96,8 +84,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     builder: (context)=>Center(child: CircularProgressIndicator(),));
     try{
    await FirebaseAuth.instance.sendPasswordResetEmail(email: emailcontroller.text.trim());
-   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Password Rest Email Sent' ,style: TextStyle(color: Colors.white, ),),backgroundColor:Color.fromARGB(200, 5, 88, 106),
+   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Password Rest Email Sent' ,style: TextStyle(color: Colors.white, ),),backgroundColor:Color(0xff519e94),
     ),);
     Navigator.of(context).popUntil((route) => route.settings.name == '/login');
     }on FirebaseAuthException catch(e){

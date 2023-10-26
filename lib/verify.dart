@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import "IntroScreen.dart";
 import 'package:flutter/material.dart';
-// import 'package:login_app/src/screens/home.dart';
 
 class VerifyScreen extends StatefulWidget {
   @override
@@ -40,15 +38,25 @@ class _VerifyScreenState extends State<VerifyScreen> {
           child: Padding(
             padding: EdgeInsets.all(20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('An email has been sent to ${user!.email} please verify',
+                Text('Verify Email',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
+                SizedBox(height: 20,),
+                Icon(Icons.mark_email_unread,color: Color(0xff519e94),size: 80,),
+                SizedBox(height: 20,),
+                Text('An email has been sent to ${user!.email} please verify',textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     )),
-                ElevatedButton(onPressed:()=>user!.sendEmailVerification(), child: Text('Resent Email'),),
-
-                ElevatedButton(onPressed:()=>FirebaseAuth.instance.signOut() , child: Text('cancel'),)
+                SizedBox(height: 20,),
+                ElevatedButton(onPressed:()=>user!.sendEmailVerification(),
+                  style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
+                  child: Text('Resent Email',style: TextStyle(color: Colors.white),),),
+                SizedBox(height: 20,),
+                ElevatedButton(onPressed:()=>FirebaseAuth.instance.signOut() ,
+                  style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94),),
+                  child: Text('cancel',style: TextStyle(color: Colors.white))),
               ],
             ),
           )),

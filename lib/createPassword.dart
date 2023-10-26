@@ -15,31 +15,23 @@ class _CreatePasswordState extends State<CreatePassword> {
       child: SingleChildScrollView(child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 30,
-          ),
-          Text(
+          SizedBox(height: 30,),
+          const Text(
             "Create New Password",
             style:
             TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
+          SizedBox(height: 10,),
+          const Text(
             "Your password must be diffrent from previous used passwords",
             style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
+          SizedBox(height: 20,),
+          const Text(
             "Password",
             style: TextStyle(fontSize: 12),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10,),
           Container(
             decoration: BoxDecoration(
                 border: Border.all(
@@ -56,16 +48,12 @@ class _CreatePasswordState extends State<CreatePassword> {
                   contentPadding: EdgeInsets.all(10)),
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
+          SizedBox(height: 20,),
+          const Text(
             "Confirm Password",
             style: TextStyle(fontSize: 12),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10,),
           Container(
             decoration: BoxDecoration(
                 border: Border.all(
@@ -82,18 +70,16 @@ class _CreatePasswordState extends State<CreatePassword> {
                   contentPadding: EdgeInsets.all(10)),
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 20,),
           MaterialButton(
-            color:Color.fromARGB(255, 5, 88, 106),
+            color:Color(0xff519e94),
             height: 20,
             minWidth: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 side: BorderSide(color: Theme.of(context).primaryColor)),
-            child: Text(
+            child: const Text(
               "Reset Password ",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
@@ -101,9 +87,7 @@ class _CreatePasswordState extends State<CreatePassword> {
               Navigator.pushNamed(context, '/tabNavigation');
             },
           ),
-          SizedBox(
-            height: 8,
-          ),
+          SizedBox(height: 8,),
         ],
 
       ) ,),)

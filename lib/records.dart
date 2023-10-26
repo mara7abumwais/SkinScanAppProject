@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Scan {
   final String image;
   final String dermatosis;
   final double percentage;
-  final String date;
+  final DateTime date;
   final String treatment;
 
   Scan({
@@ -39,21 +40,21 @@ class _RecordsState extends State<Records> {
       image: 'assets/introScreen1.jpg',
       dermatosis: 'Dermatosis 1',
       percentage: 60.0,
-      date: "2023-8-16",
+      date: DateTime(2023, 8, 15),
       treatment: 'Treatment for Dermatosis 1',
     ));
     scans.add(Scan(
       image: 'assets/introScreen2.jpg',
       dermatosis: 'Dermatosis 2',
       percentage: 92.5,
-      date: "2023-8-16",
+      date: DateTime(2023, 8, 16),
       treatment: 'Treatment for Dermatosis 2',
     ));
     scans.add(Scan(
       image: 'assets/introScreen3.jpg',
       dermatosis: 'Dermatosis 3',
       percentage: 40,
-      date: "2023-8-16",
+      date: DateTime(2023, 8, 14),
       treatment: 'Treatment for Dermatosis 3',
     ));
 
@@ -69,7 +70,7 @@ class _RecordsState extends State<Records> {
             decoration: const BoxDecoration(
               color: Colors.white60,
               image: DecorationImage(
-                image: AssetImage('assets/record.jpg'),
+                image: AssetImage('assets/record.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -111,7 +112,7 @@ class _RecordsState extends State<Records> {
                         margin: const EdgeInsets.only(top: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32),
-                          color: selectedOption == index ? Color.fromARGB(200, 5, 88, 106) : Colors.transparent,
+                          color: selectedOption == index ? Color(0xff519e94) : Colors.transparent,
                         ),
                         padding: EdgeInsets.all(8),
                         child: Row(
@@ -122,7 +123,7 @@ class _RecordsState extends State<Records> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: selectedOption == index ? Colors.white : Color.fromARGB(200, 5, 88, 106),
+                                color: selectedOption == index ? Colors.white : Color(0xff519e94),
                               ),
                             ),
                           ],
@@ -136,7 +137,7 @@ class _RecordsState extends State<Records> {
               Container(
                 margin: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(200, 5, 88, 106),
+                  color: Color(0xff519e94),
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(color: Colors.white),
                 ),
@@ -154,7 +155,6 @@ class _RecordsState extends State<Records> {
                     hintStyle: TextStyle(color: Colors.white),
                   ),
                   onChanged: (value) {
-// Filter scan2 based on the search input
                     setState(() {
                       scan2 = scans.where((scan) {
                         return scan.dermatosis.toLowerCase().contains(value.toLowerCase());
@@ -169,11 +169,18 @@ class _RecordsState extends State<Records> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Arrange: New to Old'),
+                    searchNew? Text('New to Old'):Text('Old to New'),
                     IconButton(
                       onPressed: () {
                         setState(() {
                           searchNew = !searchNew;
+                          scan2.sort((a, b) {
+                            if (searchNew) {
+                              return b.date.compareTo(a.date); // Sort from new to old
+                            } else {
+                              return a.date.compareTo(b.date); // Sort from old to new
+                            }
+                          });
                         });
                       },
                       hoverColor: Colors.transparent,
@@ -187,6 +194,7 @@ class _RecordsState extends State<Records> {
                   itemCount: scan2.length,
                   itemBuilder: (context, index) {
                     final scan = scan2[index];
+                    final formattedDate = DateFormat('yyyy-MM-dd').format(scan.date);
                     return Container(
                       padding:const EdgeInsets.symmetric(vertical: 5),
                       margin:const EdgeInsets.symmetric(vertical: 13,horizontal: 10),
@@ -195,7 +203,7 @@ class _RecordsState extends State<Records> {
                         borderRadius: BorderRadius.circular(10),
                         boxShadow:const [
                           BoxShadow(
-                            color: Color.fromARGB(200, 5, 88, 106),
+                            color: Color(0xff519e94),
                             blurRadius: 3,
                             spreadRadius: 4,
                           ),
@@ -205,12 +213,11 @@ class _RecordsState extends State<Records> {
                         leading: Image.asset(
                           scan.image,
                           width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
+                          height: 50,                          fit: BoxFit.cover,
                         ),
                         title: Text(scan.dermatosis),
                         subtitle: Text('Percentage: ${scan.percentage.toStringAsFixed(2)}%'),
-                        trailing: Text('Date: ${scan.date}'),
+                        trailing: Text('Date: $formattedDate'),
                        //ما عرضت التريتمنت
                       ),
                     );

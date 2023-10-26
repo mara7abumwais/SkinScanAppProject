@@ -61,7 +61,7 @@ class _ClinicsState extends State<Clinics> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Clinics"),
-          backgroundColor: Color.fromARGB(200, 5, 88, 106),
+          backgroundColor: Color(0xff519e94),
           actions: const [
             Icon(Icons.notifications),
             SizedBox(width: 5.0),
@@ -89,7 +89,7 @@ class _ClinicsState extends State<Clinics> {
                         margin: const EdgeInsets.only(top: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(32),
-                          color: selectedTab == index ? Color.fromARGB(200, 5, 88, 106) : Colors.transparent,
+                          color: selectedTab == index ? Color(0xff519e94) : Colors.transparent,
                         ),
                         padding: EdgeInsets.all(8),
                         child: Row(
@@ -98,7 +98,7 @@ class _ClinicsState extends State<Clinics> {
                               tabText,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: selectedTab == index ? Colors.white : Color.fromARGB(200, 5, 88, 106),
+                                color: selectedTab == index ? Colors.white : Color(0xff519e94),
                               ),
                             ),
                           ],
@@ -114,7 +114,7 @@ class _ClinicsState extends State<Clinics> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: Color.fromARGB(200, 5, 88, 106)),
+                  border: Border.all(color: Color(0xff519e94)),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
@@ -124,17 +124,17 @@ class _ClinicsState extends State<Clinics> {
                       // Update the filtered list based on the search query.
                     });
                   },
-                  style: TextStyle(color: Color.fromARGB(200, 5, 88, 106)),
-                  decoration: InputDecoration(
+                  style: TextStyle(color: Color(0xff519e94)),
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     prefixIcon: Icon(
                       Icons.search_sharp,
-                      color: Color.fromARGB(200, 5, 88, 106),
+                      color: Color(0xff519e94),
                     ),
                     hintText: 'Search for Clinics',
-                    hintStyle: TextStyle(color: Color.fromARGB(200, 5, 88, 106)),
+                    hintStyle: TextStyle(color: Color(0xff519e94)),
                   ),
-                  cursorColor: Color.fromARGB(200, 5, 88, 106),
+                  cursorColor: Color(0xff519e94),
                 ),
               ),
               SizedBox(height: 20),
@@ -162,7 +162,7 @@ class _ClinicsState extends State<Clinics> {
                       borderRadius: BorderRadius.circular(10),
                       gradient: const LinearGradient(
                         colors: [
-                          Color.fromARGB(200, 5, 88, 106),
+                          Color(0xff519e94),
                           Color.fromARGB(220, 20, 99, 100),
                           Color.fromARGB(230, 40, 110, 90),
                         ],
@@ -182,10 +182,10 @@ class _ClinicsState extends State<Clinics> {
                         ListTile(
                           title: Text(
                             doctorName,
-                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white,),
+                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black,),
                           ),
-                          subtitle: Text(clinicName, style: TextStyle(color: Colors.white)),
-                          trailing: const CircleAvatar(radius: 25, backgroundColor: Colors.black26,),
+                          subtitle: Text(clinicName, style: TextStyle(color: Colors.black54)),
+                          trailing: const CircleAvatar(radius: 25, backgroundImage: AssetImage('assets/dermatology.jpg'),),
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 15),

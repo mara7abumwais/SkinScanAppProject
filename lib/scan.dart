@@ -39,7 +39,7 @@ class _CameraWidgetState extends State<CameraWidget> {
         final img.Image? originalImage = img.decodeImage(imageFile.readAsBytesSync());
 
         if (originalImage != null) {
-          final img.Image resizedImage = img.copyResize(originalImage, width: 200, height: 200);
+          final img.Image resizedImage = img.copyResize(originalImage, width: 300, height: 300);
           final File resizedFile = File(imageFile.path)
             ..writeAsBytesSync(img.encodePng(resizedImage));
 
@@ -67,8 +67,8 @@ class _CameraWidgetState extends State<CameraWidget> {
                 children: [
                   if (imageFile != null)
                   Container(
-                  width: 640,
-                  height: 400,
+                  width: 300,
+                  height: 300,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.white24,
@@ -94,7 +94,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                     children: [
                       Expanded(
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
+                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
                             onPressed: ()=> pickImage(ImageSource.camera),
                             child: const Text('Capture Image'),
                           )
@@ -102,7 +102,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                       SizedBox(width: 20,),
                       Expanded(
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
+                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
                             onPressed: ()=> pickImage(ImageSource.gallery),
                             child: const Text('Select Image'),
                           )
@@ -111,26 +111,67 @@ class _CameraWidgetState extends State<CameraWidget> {
                   ),
                   Center(
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(200, 5, 88, 106)),
-                        onPressed: ()
-                        {
-                          if(imageFile== null)
-                            {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Please upload image first'))
-                              );
-                            }else{
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ScanResultWidget(
-                                  dermatosisName: 'Eczema',
-                                  percentage: 90,
-                                  clinics: "Jenin Clinic, Nablus Clinic",
-                                  treatment: "treatment 1",
-                                  imageFile: imageFile,
-                                ),
-                              ),
+                        style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
+                        onPressed: () {
+                          if (imageFile == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Please upload an image first')),
+                            );
+                          } else {
+                            // Show the privacy and security alert
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const  Text('Privacy and Security Alert:',style: TextStyle(fontSize: 17),),
+                                  content: const SingleChildScrollView(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          'By Choosing to scan this image,'
+                                          'you agree to our privacy and security policies.'
+                                              'We take the security and privacy of your data seriously.',
+                                        style: TextStyle(fontSize: 14),),
+
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xff519e94),
+                                        textStyle: TextStyle(color: Colors.white), // Set the text color
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ScanResultWidget(
+                                              dermatosisName: 'Eczema',
+                                              percentage: 90,
+                                              clinics: "Jenin Clinic, Nablus Clinic",
+                                              treatment: "treatment 1",
+                                              imageFile: imageFile,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text('Agree and Scan'),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xff519e94),
+                                        textStyle: TextStyle(color: Colors.white), // Set the text color
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Decline and Exit'),
+                                    ),
+                                  ],
+                                );
+                              },
                             );
                           }
                         },
@@ -144,25 +185,3 @@ class _CameraWidgetState extends State<CameraWidget> {
     );
   }
 }
-
-/*
-class AppImagePicker{
-  ImageSource source;
-
-  AppImagePicker({required this.source});
-
-  pick({onPick})async
-  {
-    final ImagePicker picker = ImagePicker();
-    final image =  await picker.pickImage(source: source,imageQuality: 90);
-
-    if(image != null)
-      {
-        onPick(File(image.path));
-      }
-    else
-      {
-        onPick(null);
-      }
-  }
-}*/

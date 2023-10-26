@@ -22,7 +22,7 @@ class TabNavigation extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarName),
-          backgroundColor: Color.fromARGB(200, 5, 88, 106),
+          backgroundColor: Color(0xff519e94),
           actions: const [
             Icon(Icons.notifications),
             SizedBox(width: 5.0,),
@@ -38,7 +38,7 @@ class TabNavigation extends StatelessWidget {
           ],
         ),
         bottomNavigationBar: Material(
-          color: Color.fromARGB(200, 5, 88, 106),
+          color: Color(0xff519e94),
           child: TabBar(tabs:<Widget>[
             const Tab(icon: Icon(Icons.home)),
             const Tab(icon: Icon(CupertinoIcons.rectangle_fill_on_rectangle_angled_fill,),),
@@ -54,7 +54,7 @@ class TabNavigation extends StatelessWidget {
                   ],
                 ),
                 child: const Center(
-                  child: Icon(CupertinoIcons.camera,color: Color.fromARGB(200, 5, 88, 106),size: 28,),
+                  child: Icon(CupertinoIcons.camera,color: Color(0xff519e94),size: 28,),
                 ),
               ),
             ),

@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'user_singleton.dart';
 
 
@@ -16,13 +18,17 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   String username = '';
   final user = UserSingleton().user;
+  late String imagePath = "";
+  late String userId;
 
   @override
   void initState() {
     super.initState();
     String firstName = user.fname;
     String lastName = user.lname;
+    userId = user.id;
     username = firstName + " " + lastName;
+    _loadLocalImagePath();
   }
 
   @override
@@ -38,11 +44,11 @@ class _SettingsState extends State<Settings> {
               Container(
                 width: 60,
                 height: 60,
-                decoration:const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     fit: BoxFit.contain, // Center crop the image
-                    image: AssetImage('assets/testUser.jpg'),
+                    image: _buildProfileImage(),
                   ),
                 ),
               ),
@@ -80,7 +86,7 @@ class _SettingsState extends State<Settings> {
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
                       withBackground: true,
-                      backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                      backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Edit your profile',
                   ),
@@ -96,7 +102,7 @@ class _SettingsState extends State<Settings> {
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
                       withBackground: true,
-                      backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                      backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Clinics',
                   ),
@@ -108,7 +114,7 @@ class _SettingsState extends State<Settings> {
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
                       withBackground: true,
-                      backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                      backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Contact us',
                   ),
@@ -122,7 +128,7 @@ class _SettingsState extends State<Settings> {
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
                       withBackground: true,
-                      backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                      backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Change password',
                   ),
@@ -132,7 +138,7 @@ class _SettingsState extends State<Settings> {
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
                       withBackground: true,
-                      backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                      backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Dark mode',
                     subtitle: "Automatic",
@@ -147,7 +153,7 @@ class _SettingsState extends State<Settings> {
                     },
                     icons: Icons.info_rounded,
                     iconStyle: IconStyle(
-                      backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                      backgroundColor: Color(0xff519e94),
                     ),
                     title: 'About',
                     subtitle: "Learn more about SkinScan",
@@ -169,11 +175,6 @@ class _SettingsState extends State<Settings> {
                     icons: Icons.exit_to_app_rounded,
                     title: "Sign Out",
                   ),
-                  /* SettingsItem(
-                    onTap: () {},
-                    icons: CupertinoIcons.repeat,
-                    title: "Change email",
-                  ),*/
                   SettingsItem(
                     onTap: () {},
                     icons: CupertinoIcons.delete_solid,
@@ -191,5 +192,20 @@ class _SettingsState extends State<Settings> {
       ),
     );
   }
+
+  ImageProvider<Object> _buildProfileImage() {
+    if (imagePath != "") {
+      return FileImage(File(imagePath)); // Load image from file
+    } else {
+      return AssetImage("assets/testUser.jpg"); // Load a default image from assets
+    }
+  }
+  void _loadLocalImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imagePath = prefs.getString('${userId}_image') ?? "";
+    });
+  }
+
 }
 

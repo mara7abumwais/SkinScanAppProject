@@ -66,7 +66,7 @@ class _ChatBodyState extends State<ChatBody> {
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.send,color: Color.fromARGB(200, 5, 88, 106),),onPressed:()=> button_sent(textController.text),
+                              icon: Icon(Icons.send,color: Color(0xff519e94),),onPressed:()=> button_sent(textController.text),
                             ),
                           ],
                         ),
@@ -95,14 +95,14 @@ class ChatMessage extends StatelessWidget {
           const Padding(padding: const EdgeInsets.only(right: 16.0),),
           Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text("User",style: TextStyle(fontSize: 10.0,color:  Color.fromARGB(200, 5, 88, 106),fontWeight: FontWeight.bold),),
+              const Text("User",style: TextStyle(fontSize: 10.0,color:  Color(0xff519e94),fontWeight: FontWeight.bold),),
               const Padding(padding: const EdgeInsets.only(top: 5.0),),
               ClipRect(
                 child: Container(
                   padding: EdgeInsets.all(10),
                   constraints: BoxConstraints(maxWidth: 500.0),
                   decoration:  BoxDecoration(
-                    color: Color.fromARGB(150, 5, 88, 106),
+                    color: Color(0xff519e94),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(text,style: TextStyle(fontWeight: FontWeight.bold),),),

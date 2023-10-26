@@ -47,7 +47,7 @@ class _ProfileState extends State<Profile> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('User Profile'),
-          backgroundColor: Color.fromARGB(200, 5, 88, 106),
+          backgroundColor: Color(0xff519e94),
         ),
         body: Stack(
           children: [
@@ -70,7 +70,7 @@ class _ProfileState extends State<Profile> {
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Color.fromARGB(200, 5, 88, 106),
+                      color: Color(0xff519e94),
                       blurRadius: 30,
                       offset: Offset(0, 10),
                     )
@@ -107,7 +107,7 @@ class _ProfileState extends State<Profile> {
                     SizedBox(height: 10),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(200, 5, 88, 106),
+                        backgroundColor: Color(0xff519e94),
                       ),
                       onPressed: () {
                         setState(() {

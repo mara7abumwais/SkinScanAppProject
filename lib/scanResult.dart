@@ -21,7 +21,7 @@ class ScanResultWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Scan Result'),
-        backgroundColor: Color.fromARGB(200, 5, 88, 106),
+        backgroundColor: Color(0xff519e94),
       ),
       body: Center(
         child: Column(
@@ -29,8 +29,8 @@ class ScanResultWidget extends StatelessWidget {
           children: <Widget>[
             if (imageFile != null)
               Container(
-                width: 640,
-                height: 400,
+                width: 300,
+                height: 300,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.white24,
@@ -39,41 +39,48 @@ class ScanResultWidget extends StatelessWidget {
                 ),
                 child: Image.file(imageFile!),
               ),
+            SizedBox(height: 20,),
             Text(
               'Dermatosis Name: $dermatosisName',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 18,color: Color(0xff519e94),)
             ),
             SizedBox(height: 20),
             Text(
               'Percentage: ${percentage.toStringAsFixed(2)}%',
-              style: TextStyle(fontSize: 20),
+              style:TextStyle(fontSize: 18,color: Color(0xff519e94),)
             ),
             SizedBox(height: 20),
             Text(
               'Clinics: $clinics',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 18,color: Color(0xff519e94),)
             ),
             SizedBox(height: 20),
             Text(
               'Treatment: $treatment',
-              style: TextStyle(fontSize: 20),
+              style:TextStyle(fontSize: 18,color: Color(0xff519e94),)
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor:Color.fromARGB(200, 5, 88, 106)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('New Scan'),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor:Color.fromARGB(200, 5, 88, 106)),
-              onPressed: () {
-                Navigator.pushNamed(context, '/Chatbot');
-              },
-              child: Text('Talk to Chatbot'),
-            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor:Color(0xff519e94)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('New Scan'),
+                ),
+                SizedBox(width: 30),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor:Color(0xff519e94)),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/Chatbot');
+                  },
+                  child: Text('Use Chatbot'),
+                ),
+              ],
+            )
           ],
         ),
       ),

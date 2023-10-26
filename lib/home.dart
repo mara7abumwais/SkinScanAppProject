@@ -16,18 +16,22 @@ class home extends StatefulWidget {
 class _homeState extends State<home> {
    bool isLogged  = false;
   String imagePath = "";
-  late String userId;
+  late String userId ="";
+  late String userName="";
 
-  @override
-  void initState() {
-    super.initState();
-    getUserData();
-    _loadLocalImagePath();
-  }
+   @override
+   void initState() {
+     super.initState();
+     initializeData();
+   }
+
+   Future<void> initializeData() async {
+     await getUserData();
+     _loadLocalImagePath();
+   }
 
   Future getUserData() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-      userId = uid!;
     try {
       QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
           .instance
@@ -40,6 +44,8 @@ class _homeState extends State<home> {
         // User document exists
         Map<String, dynamic> userData = snapshot.docs.first.data();
         print(userData);
+        userId = snapshot.docs.first.id;
+        userName = userData['firstname'];
         User loggedInUser = User(
           id: snapshot.docs.first.id,
           fname: userData['firstname'],
@@ -82,9 +88,7 @@ class _homeState extends State<home> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 5,),
                     Center(
                       child: GestureDetector(
                         onTap: () {
@@ -95,11 +99,10 @@ class _homeState extends State<home> {
                         child: Container(
                           width: 300,
                           height: 80,
-                          margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: Color.fromARGB(200, 5, 88, 106),
+                            color: Color.fromRGBO(81, 158, 148, 0.8),
                           ),
                           child:   Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -114,24 +117,33 @@ class _homeState extends State<home> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 130,),
                     Center(
                       child: Container(
                         margin: EdgeInsets.all(15),
                         padding: EdgeInsets.all(30),
-                        width: 300,
+                        width: 400,
                         height: 400,
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(200, 5, 88, 106),
-                                blurRadius: 30,
-                                offset: Offset(0, 10),
-                              )
-                            ]),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(80),
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              color:Color(0xff519e94),
+                              blurRadius: 4,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                            ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                              Text("Welcome back ${userName}! You can start new scan or use Chatbot.",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Color(0xff519e94),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),),
+                            SizedBox(height: 30,),
                             ElevatedButton.icon(
                               onPressed: () {
                                 Navigator.push(
@@ -145,7 +157,7 @@ class _homeState extends State<home> {
                               label: Text('Scan New Spot'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                Color.fromARGB(200, 5, 88, 106),
+                                  Color(0xff519e94),
                                 minimumSize: Size(200, 60),
                               ),
                             ),
@@ -165,7 +177,7 @@ class _homeState extends State<home> {
                               label: Text('Use Chatbot'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                Color.fromARGB(200, 5, 88, 106),
+                                Color(0xff519e94),
                                 minimumSize: Size(200, 60),
                               ),
                             ),
@@ -184,6 +196,7 @@ class _homeState extends State<home> {
       ),
     );
   }
+
 ImageProvider<Object> _buildProfileImage() {
     if (imagePath != "") {
       return FileImage(File(imagePath)); // Load image from file
@@ -194,7 +207,7 @@ ImageProvider<Object> _buildProfileImage() {
   void _loadLocalImagePath() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      imagePath = prefs.getString('${userId}_image')!;
+      imagePath = prefs.getString('${userId}_image') ?? "";
     });
   }
 }
