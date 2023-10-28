@@ -89,6 +89,7 @@ class _SettingsState extends State<Settings> {
                       backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Edit your profile',
+                    subtitle: "Edite your information",
                   ),
                   SettingsItem(
                     onTap: () {
@@ -105,32 +106,7 @@ class _SettingsState extends State<Settings> {
                       backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Clinics',
-                  ),
-                  SettingsItem(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/contactUs');
-                    },
-                    icons: Icons.fingerprint,
-                    iconStyle: IconStyle(
-                      iconsColor: Colors.white,
-                      withBackground: true,
-                      backgroundColor: Color(0xff519e94),
-                    ),
-                    title: 'Contact us',
-                  ),
-                  SettingsItem(
-                    onTap: () {
-                      setState(() {
-                        Navigator.pushNamed(context, '/createPassword');
-                      });
-                    },
-                    icons: Icons.lock_outline_sharp,
-                    iconStyle: IconStyle(
-                      iconsColor: Colors.white,
-                      withBackground: true,
-                      backgroundColor: Color(0xff519e94),
-                    ),
-                    title: 'Change password',
+                    subtitle: "Browse clinics in your city",
                   ),
                   SettingsItem(
                     onTap: () {},
@@ -149,9 +125,37 @@ class _SettingsState extends State<Settings> {
                   ),
                   SettingsItem(
                     onTap: () {
+                      Navigator.pushNamed(context, '/contactUs');
+                    },
+                    icons: Icons.contact_phone_rounded,
+                    iconStyle: IconStyle(
+                      iconsColor: Colors.white,
+                      withBackground: true,
+                      backgroundColor: Color(0xff519e94),
+                    ),
+                    title: 'Contact us',
+                    subtitle: "Contact with the technical support team",
+                  ),
+                  SettingsItem(
+                    onTap: () {
+                      setState(() {
+                        Navigator.pushNamed(context, '/privacyAndSecurity');
+                      });
+                    },
+                    icons: Icons.privacy_tip,
+                    iconStyle: IconStyle(
+                      iconsColor: Colors.white,
+                      withBackground: true,
+                      backgroundColor: Color(0xff519e94),
+                    ),
+                    title: 'Privacy and Security',
+                    subtitle: "Read our privacy and security information",
+                  ),
+                  SettingsItem(
+                    onTap: () {
                       Navigator.pushNamed(context, '/aboutUs');
                     },
-                    icons: Icons.info_rounded,
+                    icons: Icons.account_box_outlined,
                     iconStyle: IconStyle(
                       backgroundColor: Color(0xff519e94),
                     ),

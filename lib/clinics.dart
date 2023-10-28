@@ -112,29 +112,27 @@ class _ClinicsState extends State<Clinics> {
               Container(
                 margin: EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xff519e94),
                   borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: Color(0xff519e94)),
-                ),
+                  border: Border.all(color: Colors.white)),
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
                   controller: searchController,
                   onChanged: (query) {
                     setState(() {
-                      // Update the filtered list based on the search query.
                     });
                   },
-                  style: TextStyle(color: Color(0xff519e94)),
+                  style: TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     prefixIcon: Icon(
                       Icons.search_sharp,
-                      color: Color(0xff519e94),
+                      color: Colors.white,
                     ),
                     hintText: 'Search for Clinics',
-                    hintStyle: TextStyle(color: Color(0xff519e94)),
+                    hintStyle: TextStyle(color: Colors.white),
                   ),
-                  cursorColor: Color(0xff519e94),
+                  cursorColor: Colors.white,
                 ),
               ),
               SizedBox(height: 20),
@@ -182,7 +180,7 @@ class _ClinicsState extends State<Clinics> {
                         ListTile(
                           title: Text(
                             doctorName,
-                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black,),
+                            style: const TextStyle( color: Colors.black,),
                           ),
                           subtitle: Text(clinicName, style: TextStyle(color: Colors.black54)),
                           trailing: const CircleAvatar(radius: 25, backgroundImage: AssetImage('assets/dermatology.jpg'),),

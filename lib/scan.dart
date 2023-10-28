@@ -128,9 +128,8 @@ class _CameraWidgetState extends State<CameraWidget> {
                                     child: Column(
                                       children: <Widget>[
                                         Text(
-                                          'By Choosing to scan this image,'
-                                          'you agree to our privacy and security policies.'
-                                              'We take the security and privacy of your data seriously.',
+                                          "By choosing to scan this image, you agree to our privacy and security policies."
+                                        ' We pledge to protect your image and use it solely for the purpose of examining the disease. Your privacy and data security are of utmost importance to us.',
                                         style: TextStyle(fontSize: 14),),
 
                                       ],

@@ -2,41 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
-class ContactUsPage extends StatelessWidget {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _subjectController = TextEditingController();
-  final _messageController = TextEditingController();
+void main() => runApp(ContactUsApp());
 
-  Future sendEmail() async {
-    const email = "1652001.com@gmail.com";
-
-
-   // final stmpServer = gmailSaslXoauth2(email, accessToken);
-    final message = Message()
-      ..from = Address(_emailController.text, _nameController.text)
-      ..recipients.add('marahabumwais@gmail.com')
-      ..subject = _subjectController.text
-      ..text = 'Message from:';
-
-    try {
- //     await send(message, smtpServer);
-      print('s');
-    } on MailerException catch (e) {
-      print('Message not sent. Error: $e');
-    }
-  }
-
+class ContactUsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Contact Us'),
-          backgroundColor: Color(0xff519e94),
-        ),
-        body: Padding(
+      home: ContactUsPage(),
+    );
+  }
+}
+
+class ContactUsPage extends StatefulWidget {
+  const ContactUsPage({super.key});
+
+  @override
+  State<ContactUsPage> createState() => _ContactUsPageState();
+}
+
+final _nameController = TextEditingController();
+final _emailController = TextEditingController();
+final _subjectController = TextEditingController();
+final _messageController = TextEditingController();
+bool showSnack = false;
+late String messageS;
+
+class _ContactUsPageState extends State<ContactUsPage> {
+  Future sendEmail(BuildContext context) async {
+    const username = "marahabumwais@gmail.com";
+    const password = "kmxc jloa wdlo hnux";
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username, _nameController.text)
+      ..recipients.add("1652001.com@gmail.com")
+      ..subject = _subjectController.text
+      ..text = "This message from email: + ${_emailController.text}\n $_messageController";
+
+    try {
+      await send(message, smtpServer);
+      messageS = "Your email sent successfully";
+    } catch (e) {
+      messageS = "Error happened, try later!";
+    }
+    showSnack = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Contact Us'),
+        backgroundColor: Color(0xff519e94),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +95,13 @@ class ContactUsPage extends StatelessWidget {
                     backgroundColor: Color(0xff519e94),
                     minimumSize: Size(200, 60),
                   ),
-                  onPressed: sendEmail, // Call the sendEmail function
+                  onPressed: () async {
+                    await sendEmail(context);
+                    if (showSnack) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(messageS),backgroundColor: Color(0xff519e94),showCloseIcon: true,));
+                    }
+                  },
                   child: Text('Send Message'),
                 ),
               )

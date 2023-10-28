@@ -4,6 +4,7 @@ import 'package:firstseniorproject/aboutUs.dart';
 import 'package:firstseniorproject/contactUs.dart';
 import 'package:firstseniorproject/editProfile.dart';
 import 'package:firstseniorproject/myAnimation.dart';
+import 'package:firstseniorproject/privacyAndSecurity.dart';
 import 'package:firstseniorproject/services/firebase_options.dart';
 import 'package:firstseniorproject/changePassword.dart';
 import 'package:firstseniorproject/clinics.dart';
@@ -66,9 +67,10 @@ class MyApp extends StatelessWidget {
         '/clinics':(BuildContext ctx) => Clinics(),
         '/profile':(BuildContext ctx) => Profile(),
         '/editProfile':(BuildContext ctx) => EditProfile(),
-        '/contactUs':(BuildContext ctx)=> ContactUsPage(),
+        '/contactUs':(BuildContext ctx)=> ContactUsApp(),
         '/aboutUs':(BuildContext ctx)=> const AboutUsPage(),
         '/verify':(BuildContext ctx)=>  VerifyScreen(),
+        '/privacyAndSecurity':(BuildContext ctx)=> PrivacyAndSecurityPage(),
       },
     );
   }
