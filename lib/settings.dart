@@ -198,7 +198,12 @@ class _SettingsState extends State<Settings> {
                     title: "Sign Out",
                   ),
                   SettingsItem(
-                   onTap: _deleteAccount,
+                   onTap: ()
+                    {
+                      setState(() {
+                        _deleteAccount();
+                      });
+                    },
                     icons: CupertinoIcons.delete_solid,
                     title: "Delete account",
                     titleStyle: const TextStyle(
@@ -219,8 +224,7 @@ class _SettingsState extends State<Settings> {
     if (imagePath != "") {
       return FileImage(File(imagePath)); // Load image from file
     } else {
-      return AssetImage(
-          "assets/testUser.jpg"); // Load a default image from assets
+      return AssetImage("assets/testUser.jpg"); // Load a default image from assets
     }
   }
 
