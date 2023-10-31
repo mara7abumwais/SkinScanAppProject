@@ -110,7 +110,9 @@ class _SettingsState extends State<Settings> {
                     subtitle: "Browse clinics in your city",
                   ),
                   SettingsItem(
-                    onTap: () {},
+                   onTap: () {
+   
+ },
                     icons: Icons.dark_mode_rounded,
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
@@ -226,4 +228,5 @@ class _SettingsState extends State<Settings> {
       print('Error occurred while deleting account: $error');
     }
   }
+
 }
