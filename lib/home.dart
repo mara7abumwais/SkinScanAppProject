@@ -138,7 +138,7 @@ class _homeState extends State<home> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                              Text("Welcome back ${userName}! You can start new scan or use Chatbot.",
+                              Text("Welcome back ${userName} ! You can start new scan or use Chatbot.",
                               textAlign: TextAlign.center,
                               style: const TextStyle(color: Color(0xff519e94),
                                   fontSize: 18,
