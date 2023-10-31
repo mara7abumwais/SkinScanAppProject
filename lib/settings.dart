@@ -90,7 +90,6 @@ class _SettingsState extends State<Settings> {
                       backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Edit your profile',
-                    subtitle: "Edite your information",
                   ),
                   SettingsItem(
                     onTap: () {
@@ -107,12 +106,24 @@ class _SettingsState extends State<Settings> {
                       backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Clinics',
-                    subtitle: "Browse clinics in your city",
+                  ),
+                  SettingsItem(
+                    onTap: () {
+                      setState(() {
+                        Navigator.pushNamed(context, '/createPassword');
+                      });
+                    },
+                    icons: Icons.admin_panel_settings_sharp,
+                    iconStyle: IconStyle(
+                      iconsColor: Colors.white,
+                      withBackground: true,
+                      backgroundColor: Color(0xff519e94),
+                    ),
+                    title: 'Change Password',
                   ),
                   SettingsItem(
                    onTap: () {
-   
- },
+                    },
                     icons: Icons.dark_mode_rounded,
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
@@ -121,6 +132,7 @@ class _SettingsState extends State<Settings> {
                     ),
                     title: 'Dark mode',
                     subtitle: "Automatic",
+                    subtitleStyle: TextStyle(fontSize: 12),
                     trailing: Switch.adaptive(
                       value: false,
                       onChanged: (value) {},
@@ -138,6 +150,7 @@ class _SettingsState extends State<Settings> {
                     ),
                     title: 'Contact us',
                     subtitle: "Contact with the technical support team",
+                    subtitleStyle: TextStyle(fontSize: 12),
                   ),
                   SettingsItem(
                     onTap: () {
@@ -153,6 +166,7 @@ class _SettingsState extends State<Settings> {
                     ),
                     title: 'Privacy and Security',
                     subtitle: "Read our privacy and security information",
+                    subtitleStyle: TextStyle(fontSize: 12),
                   ),
                   SettingsItem(
                     onTap: () {
@@ -164,6 +178,7 @@ class _SettingsState extends State<Settings> {
                     ),
                     title: 'About',
                     subtitle: "Learn more about SkinScan",
+                    subtitleStyle: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
