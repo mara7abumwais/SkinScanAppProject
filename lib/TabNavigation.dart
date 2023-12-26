@@ -22,6 +22,7 @@ class TabNavigation extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(appBarName),
+          leading: Container(),
           backgroundColor: Color(0xff519e94),
           actions: const [
             Icon(Icons.notifications),

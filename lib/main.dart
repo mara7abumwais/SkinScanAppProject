@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstseniorproject/aboutUs.dart';
@@ -6,13 +8,14 @@ import 'package:firstseniorproject/editProfile.dart';
 import 'package:firstseniorproject/myAnimation.dart';
 import 'package:firstseniorproject/privacyAndSecurity.dart';
 import 'package:firstseniorproject/services/firebase_options.dart';
-import 'package:firstseniorproject/changePassword.dart';
+import 'package:firstseniorproject/forgetPassword.dart';
 import 'package:firstseniorproject/clinics.dart';
 import 'package:firstseniorproject/createPassword.dart';
 import 'package:firstseniorproject/profile.dart';
 import 'package:firstseniorproject/records.dart';
 import 'package:firstseniorproject/scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'TabNavigation.dart';
 import 'signUp.dart';
 import 'Login.dart';
@@ -20,8 +23,10 @@ import 'IntroScreen.dart';
 import 'verify.dart';
 
 Future< void> main() async {
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform,);
+  runApp(MyApp());
   runApp(MyApp());
 }
 final NavigatorKey=GlobalKey<NavigatorState>();
@@ -37,6 +42,7 @@ class MyApp extends StatelessWidget {
          brightness: Brightness.light
       ),
       routes: <String, WidgetBuilder>{
+        //'/': (BuildContext ctx) => MyAnimation(),
         '/': (BuildContext ctx) => Login(),
         '/signUp': (BuildContext ctx) =>StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
@@ -67,7 +73,7 @@ class MyApp extends StatelessWidget {
         '/clinics':(BuildContext ctx) => Clinics(),
         '/profile':(BuildContext ctx) => Profile(),
         '/editProfile':(BuildContext ctx) => EditProfile(),
-        '/contactUs':(BuildContext ctx)=> ContactUsApp(),
+        '/contactUs':(BuildContext ctx)=> ContactUsPage(),
         '/aboutUs':(BuildContext ctx)=> const AboutUsPage(),
         '/verify':(BuildContext ctx)=>  VerifyScreen(),
         '/privacyAndSecurity':(BuildContext ctx)=> PrivacyAndSecurityPage(),
@@ -75,11 +81,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-//pink
-//Color.fromRGBO(228, 147, 147, 1.0)
-
-//Beige
-//Color.fromARGB(200, 220, 206, 184)
-
 

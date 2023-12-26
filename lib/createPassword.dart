@@ -10,6 +10,14 @@ class CreatePassword extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Change Password"),
+          leading: BackButton(
+            onPressed: (){
+                Navigator.pop(context);
+            },),
+          backgroundColor: Color(0xff519e94),
+          ),
         body: CreatePasswordBody(),
       ),
     );

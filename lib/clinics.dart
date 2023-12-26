@@ -10,7 +10,8 @@ class Clinics extends StatefulWidget {
 
 class _ClinicsState extends State<Clinics> {
   int selectedTab = 0;
-  List<String> tabList = ['All Cities', 'Jenin', 'Ramallah', 'Nablus', 'Hebron', 'Tulkarm', 'Bethlehem'];
+  List<String> tabList = ['All Cities', 'Jenin', 'Ramallah', 'Nablus', 'Hebron', 'Tulkarm',
+    'Bethlehem','Tubas','Jerusalem','Jericho','Qalqilya','Gaza','Khan Yunis','Salfit'];
   List<DocumentSnapshot>? clinicss;
   TextEditingController searchController = TextEditingController();
 
@@ -61,6 +62,13 @@ class _ClinicsState extends State<Clinics> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Clinics"),
+          leading: BackButton(
+            onPressed: (){
+              setState(() {
+                Navigator.pop(context);
+              });
+            },
+          ),
           backgroundColor: Color(0xff519e94),
           actions: const [
             Icon(Icons.notifications),

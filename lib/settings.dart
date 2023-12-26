@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firstseniorproject/contactUs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
@@ -140,7 +141,11 @@ class _SettingsState extends State<Settings> {
                   ),
                   SettingsItem(
                     onTap: () {
-                      Navigator.pushNamed(context, '/contactUs');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ContactUsPage()
+                          ));
                     },
                     icons: Icons.contact_phone_rounded,
                     iconStyle: IconStyle(

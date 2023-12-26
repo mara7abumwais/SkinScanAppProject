@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firstseniorproject/TabNavigation.dart';
+import 'package:firstseniorproject/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -93,7 +94,11 @@ class _homeState extends State<home> {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
-                            Navigator.pushNamed(context, '/profile');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => Profile()
+                                ));
                           });
                         },
                         child: Container(

@@ -22,6 +22,13 @@ class _EditProfileState extends State<EditProfile> {
         appBar: AppBar(
           title: Text('Edit Profile'),
           backgroundColor: Color(0xff519e94),
+          leading: BackButton(
+            onPressed: (){
+              setState(() {
+                Navigator.pop(context);
+              });
+            },
+          ),
         ),
         body: EditUserProfileScreen(),
       ),
@@ -177,7 +184,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
 
   ImageProvider<Object> _buildProfileImage() {
     if (imagePath != "") {
-      return FileImage(File(imagePath!)); // Load image from file
+      return FileImage(File(imagePath)); // Load image from file
     } else {
       return AssetImage("assets/testUser.jpg"); // Load a default image from assets
     }

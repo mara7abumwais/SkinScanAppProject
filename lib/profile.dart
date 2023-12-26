@@ -1,20 +1,17 @@
 import 'dart:io';
-
+import 'package:firstseniorproject/editProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'user_singleton.dart';
 
-
 class Profile extends StatefulWidget {
-
-  Profile({super.key});
+  const Profile({super.key});
 
   @override
-  _ProfileState createState() => _ProfileState();
+  State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-
   final user = UserSingleton().user;
 
   late String username;
@@ -48,6 +45,13 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           title: Text('User Profile'),
           backgroundColor: Color(0xff519e94),
+          leading: BackButton(
+            onPressed: (){
+              setState(() {
+                Navigator.pop(context);
+              });
+            },
+          ),
         ),
         body: Stack(
           children: [
@@ -111,7 +115,11 @@ class _ProfileState extends State<Profile> {
                       ),
                       onPressed: () {
                         setState(() {
-                          Navigator.pushNamed(context, '/editProfile');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => EditProfile()
+                              ));
                         });
                       },
                       child: Text('Edit Profile'),
@@ -128,7 +136,7 @@ class _ProfileState extends State<Profile> {
 
   ImageProvider<Object> _buildProfileImage() {
     if (imagePath != "") {
-      return FileImage(File(imagePath!)); // Load image from file
+      return FileImage(File(imagePath)); // Load image from file
     } else {
       return AssetImage("assets/testUser.jpg"); // Load a default image from assets
     }
@@ -139,7 +147,6 @@ class _ProfileState extends State<Profile> {
       imagePath = prefs.getString('${userId}_image')!;
     });
   }
+
 }
-
-
 

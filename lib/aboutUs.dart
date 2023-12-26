@@ -1,3 +1,4 @@
+import 'package:firstseniorproject/contactUs.dart';
 import 'package:flutter/material.dart';
 
 class AboutUsPage extends StatelessWidget {
@@ -11,6 +12,10 @@ class AboutUsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text('About Us'),
           backgroundColor: Color(0xff519e94),
+          leading: BackButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },),
         ),
         body: Padding(
           padding:  EdgeInsets.all(16.0),
@@ -66,7 +71,11 @@ class AboutUsPage extends StatelessWidget {
                       minimumSize: Size(200, 60),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/contactUs');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ContactUsPage()
+                          ));
                     },
                     child: Text('Contact Us',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ChatBody extends StatefulWidget {
   @override
@@ -7,115 +8,186 @@ class ChatBody extends StatefulWidget {
 }
 
 class _ChatBodyState extends State<ChatBody> {
-
   final TextEditingController textController = new TextEditingController();
-  final List<ChatMessage> message_list = <ChatMessage>[];
+  final List<ChatMessage> messageList = <ChatMessage>[];
+  bool isSendingMessage = false;
+  bool isLoading = false;
 
-  void button_sent(String text){
+  void _sendMessage(String text) async {
     textController.clear();
-    ChatMessage message = new ChatMessage(text:text);
     setState(() {
-      message_list.insert(0,message);
+      isSendingMessage = true;
     });
 
+    // Display user message
+    ChatMessage userMessage = ChatMessage(text: text, isUser: true,isLoading: isLoading );
+    setState(() {
+      messageList.add(userMessage);
+    });
+
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      // Send a POST request to the Node.js API
+      final response = await http.post(
+        Uri.parse('https://skinscan-chatbot.onrender.com/SkinScan-Chatbot'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'message': text}),
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        String assistantReply = data['response'];
+
+        ChatMessage assistantMessage = ChatMessage(text: assistantReply, isUser: false,isLoading: false,);
+        setState(() {
+          messageList.add(assistantMessage);
+        });
+      } else {
+        // Display an error message if the response status is not 200
+        ChatMessage assistantMessage = ChatMessage(
+          text: 'Something went wrong! Please try later.',
+          isUser: false,
+          isLoading: false,
+        );
+        setState(() {
+          messageList.add(assistantMessage);
+        });
+      }
+    } catch (error) {
+      // Display an error message if an exception occurs
+      ChatMessage assistantMessage = ChatMessage(
+        text: 'Something went wrong! Please try later.',
+        isUser: false,
+        isLoading: false,
+      );
+      setState(() {
+        messageList.add(assistantMessage);
+      });
+    } finally {
+      setState(() {
+        isSendingMessage = false;
+        isLoading = false;
+      });
+    }
   }
+
   @override
   Widget build(BuildContext context) {
-    double maxWidth = MediaQuery.of(context).size.width;
-
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            body:Stack(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white60,
-                    image: DecorationImage(
-                      opacity: 0.5,
-                      image: AssetImage('assets/chatbot.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white60,
+            image: DecorationImage(
+              opacity: 0.5,
+              image: AssetImage('assets/chatbot.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.all(10.0),
+                  reverse: false,
+                  itemBuilder: (_, int index) => messageList[index],
+                  itemCount: messageList.length,
                 ),
-                SizedBox(height: 80),
-                Container(
-                  width: maxWidth,
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    children: <Widget>[
-                      Flexible(
-                        child:  ListView.builder(
-                          padding:  EdgeInsets.only(top:10.0,bottom: 10.0),
-                          reverse : true,
-                          itemBuilder: (_,int index) => message_list[index],
-                          itemCount: message_list.length,
+              ),
+              Divider(
+                color: const Color.fromARGB(255, 64, 255, 239),
+                height: 1.0,
+              ),
+              Container(
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: TextField(
+                        enabled: !isLoading,
+                        decoration: InputDecoration(
+                          hintText: "Message",
                         ),
+                        controller: textController,
+                        onSubmitted: (text) => _sendMessage(text),
                       ),
-                      Divider(color: const Color.fromARGB(255, 64, 255, 239),height: 1.0,),
-                      Container(
-                        child:  Container(
-                          color: Colors.white,
-                          child: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: TextField(
-                                decoration: InputDecoration(hintText: "Message",),
-                                controller: textController,
-                                onSubmitted: button_sent,
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.send,color: Color(0xff519e94),),onPressed:()=> button_sent(textController.text),
-                            ),
-                          ],
-                        ),
-                        ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.send,
+                        color: Color(0xff519e94),
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ))
+                        onPressed: isLoading ? null : () {
+                          _sendMessage(textController.text);
+                        }
+                    ),
+                    // Display loading indicator
+                    if (isLoading)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
-
-
 class ChatMessage extends StatelessWidget {
   final String text;
-  ChatMessage({required this.text});
+  final bool isUser;
+  final bool isLoading; // add parameter
+
+  ChatMessage({required this.text, this.isUser = true, required this.isLoading});
+
   @override
   Widget build(BuildContext context) {
-    return Container(margin: const EdgeInsets.only(right: 10.0),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      margin: isUser ? const EdgeInsets.only(right: 10.0) : const EdgeInsets.only(left: 10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-
-          const Padding(padding: const EdgeInsets.only(right: 16.0),),
-          Column(crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text("User",style: TextStyle(fontSize: 10.0,color:  Color(0xff519e94),fontWeight: FontWeight.bold),),
-              const Padding(padding: const EdgeInsets.only(top: 5.0),),
-              ClipRect(
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  constraints: BoxConstraints(maxWidth: 500.0),
-                  decoration:  BoxDecoration(
-                    color: Color(0xff519e94),
-                    borderRadius: BorderRadius.circular(8.0),
+          const Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+          ),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  isUser ? "User" : "Assistant",
+                  style: TextStyle(fontSize: 10.0, color: Color(0xff519e94), fontWeight: FontWeight.bold),
+                ),
+                const Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                ),
+                ClipRect(
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    constraints: BoxConstraints(maxWidth: 500.0),
+                    decoration: BoxDecoration(
+                      color: isUser ? Color(0xff519e94) : Colors.blueGrey,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: isLoading ? Text('...',style: TextStyle(fontWeight: FontWeight.bold),) : Text(
+                      text,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  child: Text(text,style: TextStyle(fontWeight: FontWeight.bold),),),
-              )
-
-            ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-
-
-
