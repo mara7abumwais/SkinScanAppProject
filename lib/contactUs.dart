@@ -133,8 +133,8 @@ class _ContactFormState extends State<ContactForm> {
     try {
       await send(message, smtpServer);
       _showSnackBar("Your email sent successfully! We will contact you soon.");
-
     } catch (e) {
+      print(e);
       _showSnackBar('Error while sending email! Try later.');
     }
   }
