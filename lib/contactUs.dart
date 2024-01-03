@@ -141,7 +141,7 @@ class _ContactFormState extends State<ContactForm> {
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message),duration: Duration(seconds: 15),
+      SnackBar(content: Text(message),duration: Duration(seconds: 5),
         backgroundColor: Color(0xff519e94),),
     );
   }
