@@ -223,7 +223,7 @@ class _LoginState extends State<Login> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.message!),
+          content: Text("Invalid email or password. Please ensure both your email and password are correct"),
           backgroundColor: Colors.red,
         ),
       );
