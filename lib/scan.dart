@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firstseniorproject/scanResult.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 
@@ -24,8 +25,9 @@ class _CameraWidgetState extends State<CameraWidget> {
       final File imageFile = File(xFile.path);
 
       final int fileSizeKB = (await imageFile.length()) ~/ 1024; // File size in KB
-
-     /* if (fileSizeKB < 200) {
+/*
+      // Check if the file size is less than 200KB
+      if (fileSizeKB < 200) {
         // Show a SnackBar if the file size is less than 200KB
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -35,20 +37,25 @@ class _CameraWidgetState extends State<CameraWidget> {
         setState(() {
           this.imageFile = null;
         });
-      } else */{
-        final img.Image? originalImage = img.decodeImage(imageFile.readAsBytesSync());
+      } else {*/
+        // Use ImageCropper to crop the image
+        final ImageCropper imageCropper = ImageCropper();
+        final CroppedFile? croppedFile = await imageCropper.cropImage(
+          sourcePath: xFile.path,
+          compressQuality: 100,
+          aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+          maxHeight: 200,
+          maxWidth: 200,
+        );
 
-        if (originalImage != null) {
-          final img.Image resizedImage = img.copyResize(originalImage, width: 300, height: 300);
-          final File resizedFile = File(imageFile.path)
-            ..writeAsBytesSync(img.encodePng(resizedImage));
-
+        if (croppedFile != null) {
           setState(() {
-            this.imageFile = resizedFile;
+            // Convert CroppedFile to File
+            this.imageFile = File(croppedFile.path!);
           });
         }
       }
-    } else {
+     else {
       setState(() {
         this.imageFile = null;
       });
