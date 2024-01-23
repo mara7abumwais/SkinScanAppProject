@@ -1,10 +1,12 @@
 import 'dart:io';
-import 'package:firstseniorproject/scanResult.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:firstseniorproject/scanResult.dart';
+import 'dart:typed_data';
+import 'package:image_cropper/image_cropper.dart';
 
 class CameraWidget extends StatefulWidget {
   const CameraWidget({super.key});
@@ -14,34 +16,154 @@ class CameraWidget extends StatefulWidget {
 }
 
 class _CameraWidgetState extends State<CameraWidget> {
-
   File? imageFile;
+  String body = "";
+  String result = "";
+  double percent = 0.0;
 
-  pickImage(ImageSource source) async {
+//   Future<void> pickImage(ImageSource source) async {
+//   final picker = ImagePicker();
+//   final XFile? xFile = await picker.pickImage(source: source, imageQuality: 70);
+
+//   if (xFile != null) {
+//     final File imageFile = File(xFile.path);
+
+//     final int fileSizeKB = (await imageFile.length()) ~/ 1024; // File size in KB
+
+//     if (fileSizeKB < 20) {
+//       // Show a SnackBar if the file size is less than 200KB
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(
+//           content: Text('Image quality is not sufficient. Please choose a higher-quality image.'),
+//         ),
+//       );
+//       setState(() {
+//         this.imageFile = null;
+//       });
+//     } else {
+//       final img.Image? originalImage = img.decodeImage(imageFile.readAsBytesSync());
+
+//       if (originalImage != null) {
+//         final img.Image resizedImage = img.copyResize(originalImage, width: 300, height: 300);
+//         final File resizedFile = File(imageFile.path)
+//           ..writeAsBytesSync(img.encodePng(resizedImage));
+//           setState(() {
+//             this.imageFile=resizedFile;
+//           });
+
+//         final Uri apiUrl = Uri.parse("http://10.0.2.2:5000/api");
+//         final http.MultipartRequest request = http.MultipartRequest('PUT', apiUrl)
+//           ..files.add(await http.MultipartFile.fromPath('file', resizedFile.path, filename: 'image.png'));
+
+//         try {
+//           final http.Response response = await http.Response.fromStream(await request.send());
+//           print(response.body);
+//           setState(() {
+//             body = response.body;
+//           });
+//         } catch (error) {
+//           print("Error: $error");
+//         }
+//       }
+//     }
+//   } else {
+//     setState(() {
+//       this.imageFile = null;
+//     });
+//   }
+// }
+  // Future<void> pickImage(ImageSource source) async {
+  //   final picker = ImagePicker();
+  //   final XFile? xFile =
+  //       await picker.pickImage(source: source, imageQuality: 70);
+
+  //   if (xFile != null) {
+  //     final File imageFile = File(xFile.path);
+
+  //     final int fileSizeKB =
+  //         (await imageFile.length()) ~/ 1024; // File size in KB
+
+  //     if (fileSizeKB < 20) {
+  //       // Show a SnackBar if the file size is less than 200KB
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text(
+  //               'Image quality is not sufficient. Please choose a higher-quality image.'),
+  //         ),
+  //       );
+  //       setState(() {
+  //         this.imageFile = null;
+  //       });
+  //     } else {
+  //       final ImageCropper imageCropper = ImageCropper();
+  //       final CroppedFile? croppedFile = await imageCropper.cropImage(
+  //         sourcePath: xFile.path,
+  //         compressQuality: 100,
+  //         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+  //         maxHeight: 200,
+  //         maxWidth: 200,
+  //       );
+  //       if (croppedFile != null) {
+  //         setState(() {
+  //           this.imageFile = File(croppedFile.path!);
+  //         });
+
+  //         final Uint8List imageBytes = File(croppedFile.path).readAsBytesSync();
+  //         final String base64Image = base64Encode(imageBytes);
+
+  //         final Uri apiUrl = Uri.parse("http://10.0.2.2:5000/api");
+  //         final http.Response response = await http.put(
+  //           apiUrl,
+  //           headers: {'Content-Type': 'application/json'},
+  //           body: jsonEncode({'image': base64Image}),
+  //         );
+
+  //         try {
+  //           print(response.body);
+  //           setState(() {
+  //             body = response.body;
+  //           });
+  //         } catch (error) {
+  //           print("Error: $error");
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     setState(() {
+  //       this.imageFile = null;
+  //     });
+  //   }
+  // }
+  Future<void> pickImage(ImageSource source) async {
     final picker = ImagePicker();
-    final XFile? xFile = await picker.pickImage(source: source, imageQuality: 70);
+    final XFile? xFile =
+        await picker.pickImage(source: source, imageQuality: 70);
 
     if (xFile != null) {
       final File imageFile = File(xFile.path);
 
-      final int fileSizeKB = (await imageFile.length()) ~/ 1024; // File size in KB
-/*
-      // Check if the file size is less than 200KB
-      if (fileSizeKB < 200) {
+      final int fileSizeKB =
+          (await imageFile.length()) ~/ 1024; // File size in KB
+
+      if (fileSizeKB < 20) {
         // Show a SnackBar if the file size is less than 200KB
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Image quality is not sufficient. Please choose a higher-quality image.'),
+            content: Text(
+                'Image quality is not sufficient. Please choose a higher-quality image.'),
           ),
         );
         setState(() {
           this.imageFile = null;
         });
-      } else {*/
-        // Use ImageCropper to crop the image
+      } else {
+        // Resize the image
+        final File resizedFile = await resizeImage(imageFile);
+
+        // Crop the resized image
         final ImageCropper imageCropper = ImageCropper();
         final CroppedFile? croppedFile = await imageCropper.cropImage(
-          sourcePath: xFile.path,
+          sourcePath: resizedFile.path,
           compressQuality: 100,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
           maxHeight: 200,
@@ -50,16 +172,51 @@ class _CameraWidgetState extends State<CameraWidget> {
 
         if (croppedFile != null) {
           setState(() {
-            // Convert CroppedFile to File
             this.imageFile = File(croppedFile.path!);
           });
+
+          final Uint8List imageBytes = File(croppedFile.path).readAsBytesSync();
+          final String base64Image = base64Encode(imageBytes);
+
+          final Uri apiUrl = Uri.parse("http://10.0.2.2:5000/api");
+          final http.Response response = await http.put(
+            apiUrl,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'image': base64Image}),
+          );
+
+          try {
+            print(response.body);
+            setState(() {
+              body = response.body;
+            });
+            Map<String, dynamic> jsonResponse = json.decode(body);
+            String predictedClass = jsonResponse['predicted_class'];
+            List<dynamic> rawPredictions = jsonResponse['raw_predictions'][0];
+            double maxValue = rawPredictions
+                .reduce((max, value) => max > value ? max : value);
+            result=predictedClass;
+            percent=maxValue*100;
+          } catch (error) {
+            print("Error: $error");
+          }
         }
       }
-     else {
+    } else {
       setState(() {
         this.imageFile = null;
       });
     }
+  }
+
+  Future<File> resizeImage(File originalImage) async {
+    final img.Image image = img.decodeImage(originalImage.readAsBytesSync())!;
+    final img.Image resizedImage =
+        img.copyResize(image, width: 300, height: 300);
+    final File resizedFile = File(originalImage.path)
+      ..writeAsBytesSync(img.encodePng(resizedImage));
+
+    return resizedFile;
   }
 
   @override
@@ -68,12 +225,12 @@ class _CameraWidgetState extends State<CameraWidget> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             body: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (imageFile != null)
-                  Container(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (imageFile != null)
+                Container(
                   width: 300,
                   height: 300,
                   alignment: Alignment.center,
@@ -82,112 +239,120 @@ class _CameraWidgetState extends State<CameraWidget> {
                     border: Border.all(width: 8, color: Colors.black38),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                    child: Image.file(imageFile!),
+                  child: Image.file(imageFile!),
                 )
-                  else
-                    Container(
-                      width: 640,
-                      height: 400,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        border: Border.all(width: 8, color: Colors.black38),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Text('Your Image'),
-                    ),
-                  const SizedBox(height: 20,),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                            onPressed: ()=> pickImage(ImageSource.camera),
-                            child: const Text('Capture Image'),
-                          )
-                      ),
-                      SizedBox(width: 20,),
-                      Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                            onPressed: ()=> pickImage(ImageSource.gallery),
-                            child: const Text('Select Image'),
-                          )
-                      )
-                    ],
+              else
+                Container(
+                  width: 640,
+                  height: 400,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    border: Border.all(width: 8, color: Colors.black38),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  Center(
+                  child: const Text('Your Image'),
+                ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Expanded(
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                        onPressed: () {
-                          if (imageFile == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Please upload an image first')),
-                            );
-                          } else {
-                            // Show the privacy and security alert
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const  Text('Privacy and Security Alert:',style: TextStyle(fontSize: 17),),
-                                  content: const SingleChildScrollView(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          "By choosing to scan this image, you agree to our privacy and security policies."
-                                        ' We pledge to protect your image and use it solely for the purpose of examining the disease. Your privacy and data security are of utmost importance to us.',
-                                        style: TextStyle(fontSize: 14),),
-
-                                      ],
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xff519e94),
-                                        textStyle: TextStyle(color: Colors.white), // Set the text color
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ScanResultWidget(
-                                              dermatosisName: 'Eczema',
-                                              percentage: 90,
-                                              clinics: "Jenin Clinic, Nablus Clinic",
-                                              treatment: "treatment 1",
-                                              imageFile: imageFile,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Text('Agree and Scan'),
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xff519e94),
-                                        textStyle: TextStyle(color: Colors.white), // Set the text color
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Decline and Exit'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                        child: const Text('Scan Image'),
-                      )
-                  )
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff519e94)),
+                    onPressed: () => pickImage(ImageSource.camera),
+                    child: const Text('Capture Image'),
+                  )),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                      child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff519e94)),
+                    onPressed: () => pickImage(ImageSource.gallery),
+                    child: const Text('Select Image'),
+                  ))
                 ],
               ),
-            )
-        )
-    );
+              Center(
+                  child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xff519e94)),
+                onPressed: () {
+                  if (imageFile == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Please upload an image first')),
+                    );
+                  } else {
+                    // Show the privacy and security alert
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text(
+                            'Privacy and Security Alert:',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          content: const SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "By choosing to scan this image, you agree to our privacy and security policies."
+                                  ' We pledge to protect your image and use it solely for the purpose of examining the disease. Your privacy and data security are of utmost importance to us.',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xff519e94),
+                                textStyle: TextStyle(
+                                    color: Colors.white), // Set the text color
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ScanResultWidget(
+                                      dermatosisName: result,
+                                      percentage: percent,
+                                      clinics: "Jenin Clinic, Nablus Clinic",
+                                      treatment: "treatment 1",
+                                      imageFile: imageFile,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text('Agree and Scan'),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xff519e94),
+                                textStyle: TextStyle(
+                                    color: Colors.white), // Set the text color
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Decline and Exit'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+                child: const Text('Scan Image'),
+              ))
+            ],
+          ),
+        )));
   }
 }
