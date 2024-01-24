@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstseniorproject/aboutUs.dart';
@@ -21,7 +20,8 @@ import 'signUp.dart';
 import 'Login.dart';
 import 'IntroScreen.dart';
 import 'verify.dart';
-
+import 'chatbot.dart';
+import 'addt.dart';
 Future< void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,9 +74,11 @@ class MyApp extends StatelessWidget {
         '/profile':(BuildContext ctx) => Profile(),
         '/editProfile':(BuildContext ctx) => EditProfile(),
         '/contactUs':(BuildContext ctx)=> ContactUsPage(),
-        '/aboutUs':(BuildContext ctx)=> const AboutUsPage(),
+        '/aboutUs':(BuildContext ctx)=> MyWidget(),
         '/verify':(BuildContext ctx)=>  VerifyScreen(),
         '/privacyAndSecurity':(BuildContext ctx)=> PrivacyAndSecurityPage(),
+        '/Chatbot':(BuildContext ctx)=> ChatBody(),
+
       },
     );
   }

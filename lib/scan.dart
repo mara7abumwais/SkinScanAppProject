@@ -21,119 +21,7 @@ class _CameraWidgetState extends State<CameraWidget> {
   String result = "";
   double percent = 0.0;
 
-//   Future<void> pickImage(ImageSource source) async {
-//   final picker = ImagePicker();
-//   final XFile? xFile = await picker.pickImage(source: source, imageQuality: 70);
 
-//   if (xFile != null) {
-//     final File imageFile = File(xFile.path);
-
-//     final int fileSizeKB = (await imageFile.length()) ~/ 1024; // File size in KB
-
-//     if (fileSizeKB < 20) {
-//       // Show a SnackBar if the file size is less than 200KB
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(
-//           content: Text('Image quality is not sufficient. Please choose a higher-quality image.'),
-//         ),
-//       );
-//       setState(() {
-//         this.imageFile = null;
-//       });
-//     } else {
-//       final img.Image? originalImage = img.decodeImage(imageFile.readAsBytesSync());
-
-//       if (originalImage != null) {
-//         final img.Image resizedImage = img.copyResize(originalImage, width: 300, height: 300);
-//         final File resizedFile = File(imageFile.path)
-//           ..writeAsBytesSync(img.encodePng(resizedImage));
-//           setState(() {
-//             this.imageFile=resizedFile;
-//           });
-
-//         final Uri apiUrl = Uri.parse("http://10.0.2.2:5000/api");
-//         final http.MultipartRequest request = http.MultipartRequest('PUT', apiUrl)
-//           ..files.add(await http.MultipartFile.fromPath('file', resizedFile.path, filename: 'image.png'));
-
-//         try {
-//           final http.Response response = await http.Response.fromStream(await request.send());
-//           print(response.body);
-//           setState(() {
-//             body = response.body;
-//           });
-//         } catch (error) {
-//           print("Error: $error");
-//         }
-//       }
-//     }
-//   } else {
-//     setState(() {
-//       this.imageFile = null;
-//     });
-//   }
-// }
-  // Future<void> pickImage(ImageSource source) async {
-  //   final picker = ImagePicker();
-  //   final XFile? xFile =
-  //       await picker.pickImage(source: source, imageQuality: 70);
-
-  //   if (xFile != null) {
-  //     final File imageFile = File(xFile.path);
-
-  //     final int fileSizeKB =
-  //         (await imageFile.length()) ~/ 1024; // File size in KB
-
-  //     if (fileSizeKB < 20) {
-  //       // Show a SnackBar if the file size is less than 200KB
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(
-  //           content: Text(
-  //               'Image quality is not sufficient. Please choose a higher-quality image.'),
-  //         ),
-  //       );
-  //       setState(() {
-  //         this.imageFile = null;
-  //       });
-  //     } else {
-  //       final ImageCropper imageCropper = ImageCropper();
-  //       final CroppedFile? croppedFile = await imageCropper.cropImage(
-  //         sourcePath: xFile.path,
-  //         compressQuality: 100,
-  //         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-  //         maxHeight: 200,
-  //         maxWidth: 200,
-  //       );
-  //       if (croppedFile != null) {
-  //         setState(() {
-  //           this.imageFile = File(croppedFile.path!);
-  //         });
-
-  //         final Uint8List imageBytes = File(croppedFile.path).readAsBytesSync();
-  //         final String base64Image = base64Encode(imageBytes);
-
-  //         final Uri apiUrl = Uri.parse("http://10.0.2.2:5000/api");
-  //         final http.Response response = await http.put(
-  //           apiUrl,
-  //           headers: {'Content-Type': 'application/json'},
-  //           body: jsonEncode({'image': base64Image}),
-  //         );
-
-  //         try {
-  //           print(response.body);
-  //           setState(() {
-  //             body = response.body;
-  //           });
-  //         } catch (error) {
-  //           print("Error: $error");
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     setState(() {
-  //       this.imageFile = null;
-  //     });
-  //   }
-  // }
   Future<void> pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final XFile? xFile =
@@ -323,8 +211,6 @@ class _CameraWidgetState extends State<CameraWidget> {
                                     builder: (context) => ScanResultWidget(
                                       dermatosisName: result,
                                       percentage: percent,
-                                      clinics: "Jenin Clinic, Nablus Clinic",
-                                      treatment: "treatment 1",
                                       imageFile: imageFile,
                                     ),
                                   ),
