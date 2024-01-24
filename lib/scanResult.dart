@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'user_singleton.dart';
 
 class ScanResultWidget extends StatefulWidget {
@@ -32,17 +33,42 @@ class _ScanResultWidgetState extends State<ScanResultWidget> {
     try {
       String recordId = FirebaseFirestore.instance.collection('records').doc().id;
 
+      // Upload image to Firebase Storage
+      String imageUrl = await uploadImage(widget.imageFile!, recordId);
+      print('55555555555555555.');
+
+      // Save record details in Firestore
       await FirebaseFirestore.instance.collection('records').doc(recordId).set({
         'record_id': recordId,
         'user_id': userId,
         'percent': widget.percentage,
         'dermatosis': widget.dermatosisName,
         'record_date': DateTime.now().toString(),
+        'image_url': imageUrl, // Save image URL along with other details
       });
 
       print('Record saved successfully.');
     } catch (error) {
       print('Error saving record: $error');
+    }
+  }
+
+  Future<String> uploadImage(File imageFile, String recordId) async {
+    try {
+      // Create a reference to the image in Firebase Storage
+      Reference storageReference = FirebaseStorage.instance.ref().child('images/$recordId.jpg');
+
+      // Upload the image to Firebase Storage
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+      // Get the download URL of the uploaded image
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      return imageUrl;
+    } catch (error) {
+      print('Error uploading image: $error');
+      throw error;
     }
   }
 
