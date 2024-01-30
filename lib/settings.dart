@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firstseniorproject/contactUs.dart';
+import 'package:firstseniorproject/dermatosisInsight.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
@@ -121,23 +122,24 @@ class _SettingsState extends State<Settings> {
                       backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Change Password',
-                  ),
+                  ),//dermatosisInsight
                   SettingsItem(
-                   onTap: () {
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => DermatosisInsight()
+                          ));
                     },
-                    icons: Icons.dark_mode_rounded,
+                    icons: Icons.insights,
                     iconStyle: IconStyle(
                       iconsColor: Colors.white,
                       withBackground: true,
                       backgroundColor: Color(0xff519e94),
                     ),
-                    title: 'Dark mode',
-                    subtitle: "Automatic",
+                    title: 'Our Insight',
+                    subtitle: "Dermatoses collection and our insight.",
                     subtitleStyle: TextStyle(fontSize: 12),
-                    trailing: Switch.adaptive(
-                      value: false,
-                      onChanged: (value) {},
-                    ),
                   ),
                   SettingsItem(
                     onTap: () {

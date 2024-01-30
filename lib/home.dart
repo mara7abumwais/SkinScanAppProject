@@ -146,7 +146,7 @@ class _homeState extends State<home> {
                               Text("Welcome back ${userName} ! You can start new scan or use Chatbot.",
                               textAlign: TextAlign.center,
                               style: const TextStyle(color: Color(0xff519e94),
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w600),),
                             SizedBox(height: 30,),
                             ElevatedButton.icon(
@@ -162,8 +162,9 @@ class _homeState extends State<home> {
                               label: Text('Scan New Spot'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
-                                  Color(0xff519e94),
-                                minimumSize: Size(200, 60),
+                                Color(0xff519e94),
+                                textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),
+                                minimumSize: Size(260, 60),
                               ),
                             ),
                             SizedBox(height: 20),
@@ -183,7 +184,8 @@ class _homeState extends State<home> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                 Color(0xff519e94),
-                                minimumSize: Size(200, 60),
+                                textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),
+                                minimumSize: Size(260, 60),
                               ),
                             ),
                             SizedBox(height: 20,),

@@ -96,22 +96,24 @@ class _ProfileState extends State<Profile> {
                     SizedBox(height: 10),
                     Text(
                       email,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      style: TextStyle(fontSize: 16, color: Colors.black54,fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
                     Text(
                       "Age: "+ age.toString(),
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      style: TextStyle(fontSize: 16, color: Colors.black54,fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
                     Text(
                       "City: "+ city,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      style: TextStyle(fontSize: 16, color: Colors.black54,fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff519e94),
+                        textStyle: TextStyle(fontSize: 20),
+                        padding: EdgeInsets.all(15)
                       ),
                       onPressed: () {
                         setState(() {

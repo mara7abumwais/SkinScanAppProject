@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firstseniorproject/TabNavigation.dart';
+import 'package:firstseniorproject/treatment.dart';
 import 'package:flutter/material.dart';
+import 'clinics.dart';
 import 'user_singleton.dart';
 
 class ScanResultWidget extends StatefulWidget {
@@ -22,11 +25,16 @@ class ScanResultWidget extends StatefulWidget {
 class _ScanResultWidgetState extends State<ScanResultWidget> {
   final user = UserSingleton().user;
   late String userId;
+  late String city;
 
   @override
   void initState() {
     super.initState();
-    userId = user.id;
+    if (user != null) {
+      userId = user.id;
+      city = user.city[0].toUpperCase() + user.city.substring(1);
+      print(city);
+    }
   }
 
   Future<void> saveRecord() async {
@@ -35,7 +43,6 @@ class _ScanResultWidgetState extends State<ScanResultWidget> {
 
       // Upload image to Firebase Storage
       String imageUrl = await uploadImage(widget.imageFile!, recordId);
-      print('55555555555555555.');
 
       // Save record details in Firestore
       await FirebaseFirestore.instance.collection('records').doc(recordId).set({
@@ -83,77 +90,117 @@ class _ScanResultWidgetState extends State<ScanResultWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if (widget.imageFile != null)
-              Container(
-                width: 300,
-                height: 300,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white24,
-                  border: Border.all(width: 8, color: Colors.black38),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Image.file(widget.imageFile!),
+            Container(
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xff519e94),width: 2),
+                borderRadius: BorderRadius.circular(10),
               ),
-            SizedBox(height: 20,),
-            Text(
-              'Dermatosis Name: ${widget.dermatosisName}',
-              style: TextStyle(fontSize: 18, color: Color(0xff519e94),),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Percentage: ${widget.percentage.toStringAsFixed(2)}%',
-              style: TextStyle(fontSize: 18, color: Color(0xff519e94),),
-            ),
-            SizedBox(height: 20),
-            if (widget.percentage > 70)
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                onPressed: () {
-                  // Navigate to treatment
-                  Navigator.pushNamed(context, '/treatment');
-                },
-                child: Text('View Treatment'),
-              )
-            else
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                onPressed: () {
-                  // Navigate to clinics
-                  Navigator.pushNamed(context, '/clinics');
-                },
-                child: Text('Show Clinics'),
+              child: Column(
+                children: [
+                  if (widget.imageFile != null)
+                    Container(
+                      width: 224,
+                      height: 224,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        border: Border.all(width: 8, color: Colors.black38),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Image.file(widget.imageFile!),
+                    ),
+                  SizedBox(height: 20,),
+                  Text(
+                      'Dermatosis Name: ${widget.dermatosisName}',
+                      style: TextStyle(fontSize: 22, color: Colors.black87,fontWeight: FontWeight.bold)
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Percentage: ${widget.percentage.toStringAsFixed(2)}%',
+                    style: TextStyle(fontSize: 22, color: Colors.black87,fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  if (widget.percentage > 70)
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
+                      onPressed: () {
+                        // Navigate to clinics with the specified cityName
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => treatment(dermatosisName: widget.dermatosisName),
+                          ),
+                        );
+                      },
+                      child: Text('View Treatment'),
+                    )
+                  else
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xff519e94),
+                          textStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),
+                          padding: EdgeInsets.all(15)
+                      ),
+                      onPressed: () {
+                        // Navigate to clinics with the specified cityName
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Clinics(cityName: city),
+                          ),
+                        );
+                      },
+                      child: Text('Show Clinics'),
+                    ),
+                  SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff519e94),
+                            textStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),
+                            padding: EdgeInsets.all(15)
+                        ),                  onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                        child: Text('New Scan'),
+                      ),
+                      SizedBox(width: 30),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff519e94),
+                            textStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),
+                            padding: EdgeInsets.all(15)
+                        ),                  onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => TabNavigation(3)));
+                      },
+                        child: Text('Use Chatbot'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            SizedBox(height: 20),
+            ),
+            SizedBox(height: 30),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-              onPressed: () {
-                saveRecord();
-              },
-              child: Text('Save Record'),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white54,
+                  side: BorderSide(width: 2,color: Color(0xff519e94)),
+                  textStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),
+                  padding: EdgeInsets.all(15)
+              ),              onPressed: () {
+              saveRecord();
+            },
+              child: Text('Save Record',style: TextStyle(color: Color(0xff519e94),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+              ),),
             ),
-            SizedBox(height: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('New Scan'),
-                ),
-                SizedBox(width: 30),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/Chatbot');
-                  },
-                  child: Text('Use Chatbot'),
-                ),
-              ],
-            )
           ],
         ),
       ),

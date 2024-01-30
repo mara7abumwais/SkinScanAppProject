@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstseniorproject/aboutUs.dart';
 import 'package:firstseniorproject/contactUs.dart';
+import 'package:firstseniorproject/dermatosisInsight.dart';
 import 'package:firstseniorproject/editProfile.dart';
 import 'package:firstseniorproject/myAnimation.dart';
 import 'package:firstseniorproject/privacyAndSecurity.dart';
@@ -73,17 +74,15 @@ class MyApp extends StatelessWidget {
         '/forgetPassword':(BuildContext ctx) => ForgotPassword(),
         '/records':(BuildContext ctx) => Records(),
         '/createPassword':(BuildContext ctx) => CreatePassword(),
-        '/clinics':(BuildContext ctx) => Clinics(),
+        '/clinics':(BuildContext ctx) => Clinics(cityName: 'All Cities',),
         '/profile':(BuildContext ctx) => Profile(),
         '/editProfile':(BuildContext ctx) => EditProfile(),
         '/contactUs':(BuildContext ctx)=> ContactUsPage(),
-        '/aboutUs':(BuildContext ctx)=> MyWidget(),
+        '/aboutUs':(BuildContext ctx)=> AboutUsPage(),
         '/verify':(BuildContext ctx)=>  VerifyScreen(),
+        '/dermatosisInsight':(BuildContext ctx)=>DermatosisInsight(),
         '/privacyAndSecurity':(BuildContext ctx)=> PrivacyAndSecurityPage(),
         '/Chatbot':(BuildContext ctx)=> ChatBody(),
-         '/treatment':(BuildContext ctx)=> treatment(),
-
-
       },
     );
   }

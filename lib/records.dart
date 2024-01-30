@@ -75,6 +75,30 @@ class _RecordsState extends State<Records> {
     }
   }
 
+  Future<void> deleteRecord(String recordId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('records')
+          .doc(recordId)
+          .delete();
+
+      // Update the UI after deleting the record
+      setState(() {
+        scans.removeWhere((scan) => scan.recordId == recordId);
+        scan2 = List.from(scans);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Color(0xff519e94),
+          content: Text('Record deleted successfully'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (error) {
+      print('Error deleting record: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +161,7 @@ class _RecordsState extends State<Records> {
                               Text(
                                 tabText,
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: selectedOption == index
                                       ? Colors.white
@@ -219,33 +243,58 @@ class _RecordsState extends State<Records> {
                     itemBuilder: (context, index) {
                       final scan = scan2[index];
                       final formattedDate =
-                          DateFormat('yyyy-MM-dd').format(scan.recordDate);
+                      DateFormat('yyyy-MM-dd').format(scan.recordDate);
                       return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 13, horizontal: 10),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.symmetric(vertical: 13, horizontal: 10),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0xff519e94),
-                              blurRadius: 3,
-                              spreadRadius: 4,
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xff519e94),
+                            blurRadius: 3,
+                            spreadRadius: 4,
+                          ),
+                        ],
+                      ),
+                        child: Row(
+                          children: [
+                            Image.network(
+                              scan.imageUrl,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(child: Text(scan.dermatosis,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),),
+                                  SizedBox(height: 10,),
+                                  Center(child: Text('Percentage: ${scan.percent.toStringAsFixed(2)}%',
+                                    style: TextStyle(fontSize: 16),)),
+                                  SizedBox(height: 5,),
+                                  Center(child: Text('Date: $formattedDate',style: TextStyle(fontSize: 16),)),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  hoverColor:Colors.red,
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                     setState(() {
+                                       deleteRecord(scan.recordId);
+                                     });
+                                  },
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                        child: ListTile(
-                          leading: Image.network(
-                            scan.imageUrl,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          ),
-                          title: Text(scan.dermatosis),
-                          subtitle:
-                              Text('Percentage: ${scan.percent.toStringAsFixed(2)}%'),
-                          trailing: Text('Date: $formattedDate'),
                         ),
                       );
                     },

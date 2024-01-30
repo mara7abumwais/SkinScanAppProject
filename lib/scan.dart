@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:firstseniorproject/user_singleton.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:firstseniorproject/scanResult.dart';
@@ -16,12 +16,11 @@ class CameraWidget extends StatefulWidget {
 }
 
 class _CameraWidgetState extends State<CameraWidget> {
+
   File? imageFile;
   String body = "";
   String result = "";
   double percent = 0.0;
-
-
 
   Future<void> pickImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -47,27 +46,27 @@ class _CameraWidgetState extends State<CameraWidget> {
         });
       } else {
         // Resize the image
-        final File resizedFile = await resizeImage(imageFile);
+        //final File resizedFile = await resizeImage(imageFile);
 
         // Crop the resized image
         final ImageCropper imageCropper = ImageCropper();
         final CroppedFile? croppedFile = await imageCropper.cropImage(
-          sourcePath: resizedFile.path,
+          sourcePath: imageFile.path,
           compressQuality: 100,
           aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-          maxHeight: 200,
-          maxWidth: 200,
+          maxHeight: 224,
+          maxWidth: 224,
         );
 
         if (croppedFile != null) {
           setState(() {
-            this.imageFile = File(croppedFile.path!);
+            this.imageFile = File(croppedFile.path);
           });
 
           final Uint8List imageBytes = File(croppedFile.path).readAsBytesSync();
           final String base64Image = base64Encode(imageBytes);
 
-          final Uri apiUrl = Uri.parse("http://192.168.1.235:5000/api");
+          final Uri apiUrl = Uri.parse("https://skinscan-model.onrender.com/api");
           final http.Response response = await http.put(
             apiUrl,
             headers: {'Content-Type': 'application/json'},
@@ -98,15 +97,15 @@ class _CameraWidgetState extends State<CameraWidget> {
     }
   }
 
+/*
   Future<File> resizeImage(File originalImage) async {
     final img.Image image = img.decodeImage(originalImage.readAsBytesSync())!;
     final img.Image resizedImage =
-        img.copyResize(image, width: 300, height: 300);
+        img.copyResize(image, width: 224, height: 224);
     final File resizedFile = File(originalImage.path)
       ..writeAsBytesSync(img.encodePng(resizedImage));
-
     return resizedFile;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +119,8 @@ class _CameraWidgetState extends State<CameraWidget> {
             children: [
               if (imageFile != null)
                 Container(
-                  width: 300,
-                  height: 300,
+                  width: 224,
+                  height: 224,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.white24,
@@ -132,8 +131,8 @@ class _CameraWidgetState extends State<CameraWidget> {
                 )
               else
                 Container(
-                  width: 640,
-                  height: 400,
+                  width: 300,
+                  height: 300,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.white24,

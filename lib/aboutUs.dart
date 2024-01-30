@@ -23,18 +23,20 @@ class AboutUsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  'About SkinScan App:',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                const Center(
+                  child: Text(
+                    'About SkinScan App:',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 SizedBox(height: 10),
                 const Text(
                   'SkinScan is a mobile app designed to assist users in '
                       'detecting skin issues and dermatosis using image scanning. '
-                      'The app uses advanced machine learning models to analyze '
+                      'The app uses advanced machine learning model to analyze '
                       'images of skin spots and provide potential dermatosis diagnoses '
                       'along with a percentage probability.',style: TextStyle(fontSize: 15),
                 ),
@@ -54,12 +56,12 @@ class AboutUsPage extends StatelessWidget {
                       " creating a cutting-edge solution for dermatoses diagnosis "
                       "As students at Arab American University, this project is the culmination of our senior project, "
                       "representing our commitment to making a positive impact in the healthcare field. Our app harnesses the power of AI technology to offer "
-                      "a precise and efficient diagnosis of dermatoses through a mobile device and an internet connection. "
+                      "efficient diagnosis of dermatoses through a mobile device and an internet connection. "
                       "It is our mission to enhance accessibility to dermatological care, ensuring that individuals worldwide "
                       "can take control of their skin health and receive the guidance they need, no matter where they are."
                       "While our app is a valuable tool, it's important to emphasize that it is not a replacement for"
                       " a professional medical diagnosis. Users should always consult a dermatologist or a qualified healthcare provider"
-                      " if they have health concerns."
+                      " if they have health concerns. "
                       "Join us on our journey to redefine dermatological care and bring about positive change in the lives of individuals everywhere.",
                   style: TextStyle(fontSize: 15),
                 ),

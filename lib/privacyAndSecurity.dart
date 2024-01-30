@@ -59,40 +59,14 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                 style: TextStyle(fontSize: 14),
               ),
               Text(
-                '- Improve our services and develop new features.',
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                '2. Data Security',
+                '2. Data Sharing',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                'We take data security seriously and have implemented measures to protect your information from unauthorized access. This includes encryption, secure data storage, and access controls.',
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                '3. Data Sharing',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'We do not share your personal information and uploaded data with third parties unless required by law or with your explicit consent.',
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                '4. Changes to Privacy Policy',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'We may update this privacy policy from time to time. You will be notified of any changes, and the updated policy will be posted on our website and within the app.',
+                'We do not share your personal information and uploaded data with third parties',
                 style: TextStyle(fontSize: 14),
               ),
               SizedBox(height: 20),
@@ -111,15 +85,7 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                 style: TextStyle(fontSize: 14),
               ),
               Text(
-                '1. Encryption:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'All data transmitted between your device and our servers is encrypted using industry-standard encryption protocols to prevent interception by third parties.',
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                '2. Secure Data Storage:',
+                '1. Secure Data Storage:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
@@ -127,19 +93,11 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                 style: TextStyle(fontSize: 14),
               ),
               Text(
-                '3. Access Controls:',
+                '2. Access Controls:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
                 'Access to user data is restricted to authorized personnel only. Our team undergoes regular security training to ensure the safety of your information.',
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                '4. Data Retention Policy:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'We retain your data only for as long as necessary to provide our services. When your data is no longer needed, it is securely deleted.',
                 style: TextStyle(fontSize: 14),
               ),
             ],
