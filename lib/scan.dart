@@ -22,6 +22,7 @@ class _CameraWidgetState extends State<CameraWidget> {
   double percent = 0.0;
 
 
+
   Future<void> pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final XFile? xFile =
@@ -66,7 +67,7 @@ class _CameraWidgetState extends State<CameraWidget> {
           final Uint8List imageBytes = File(croppedFile.path).readAsBytesSync();
           final String base64Image = base64Encode(imageBytes);
 
-          final Uri apiUrl = Uri.parse("http://10.0.2.2:5000/api");
+          final Uri apiUrl = Uri.parse("http://192.168.1.235:5000/api");
           final http.Response response = await http.put(
             apiUrl,
             headers: {'Content-Type': 'application/json'},

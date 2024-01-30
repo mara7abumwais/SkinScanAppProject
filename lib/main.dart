@@ -22,6 +22,9 @@ import 'IntroScreen.dart';
 import 'verify.dart';
 import 'chatbot.dart';
 import 'addt.dart';
+import 'treatment.dart';
+
+
 Future< void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,6 +81,8 @@ class MyApp extends StatelessWidget {
         '/verify':(BuildContext ctx)=>  VerifyScreen(),
         '/privacyAndSecurity':(BuildContext ctx)=> PrivacyAndSecurityPage(),
         '/Chatbot':(BuildContext ctx)=> ChatBody(),
+         '/treatment':(BuildContext ctx)=> treatment(),
+
 
       },
     );
