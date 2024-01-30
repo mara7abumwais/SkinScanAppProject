@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Clinics extends StatefulWidget {
-  const Clinics({Key? key}) : super(key: key);
+  final String cityName;
 
+  const Clinics({Key? key, required this.cityName}) : super(key: key);
   @override
   _ClinicsState createState() => _ClinicsState();
 }
@@ -19,6 +20,16 @@ class _ClinicsState extends State<Clinics> {
   void initState() {
     super.initState();
     fetchClinics();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Check if the provided city name exists in tabList
+    int cityIndex = tabList.indexOf(widget.cityName);
+    setState(() {
+      selectedTab = cityIndex != -1 ? cityIndex : 0;
+    });
   }
 
   Future<void> fetchClinics() async {
@@ -190,7 +201,7 @@ class _ClinicsState extends State<Clinics> {
                             doctorName,
                             style: const TextStyle( color: Colors.black,),
                           ),
-                          subtitle: Text(clinicName, style: TextStyle(color: Colors.black54)),
+                          subtitle: Text(clinicName, style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold)),
                           trailing: const CircleAvatar(radius: 25, backgroundImage: AssetImage('assets/dermatology.jpg'),),
                         ),
                         const Padding(
@@ -201,23 +212,25 @@ class _ClinicsState extends State<Clinics> {
                           ),
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
                               children: [
+                                const Icon(Icons.location_on, color: Colors.white70,),
+                                SizedBox(width: 5),
                                 Text(
-                                  openingHours,
-                                  style: const TextStyle(color: Colors.white,),
+                                  city,
+                                  style: const TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
                             Row(
                               children: [
-                                const Icon(Icons.access_time_filled, color: Colors.white70,),
+                                const Icon(Icons.location_city, color: Colors.white70,),
                                 SizedBox(width: 5),
                                 Text(
-                                  openingHours,
-                                  style: const TextStyle(color: Colors.white70,),
+                                  location,
+                                  style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -225,25 +238,15 @@ class _ClinicsState extends State<Clinics> {
                         ),
                         SizedBox(height: 15),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Row(
                               children: [
-                                const Icon(Icons.location_city, color: Colors.white70,),
+                                const Icon(Icons.access_time_filled, color: Colors.white70,),
                                 SizedBox(width: 5),
                                 Text(
-                                  city,
-                                  style: const TextStyle(color: Colors.white70,),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Icon(Icons.location_on, color: Colors.white70,),
-                                SizedBox(width: 5),
-                                Text(
-                                  location,
-                                  style: TextStyle(color: Colors.white70,),
+                                  openingHours,
+                                  style: const TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
