@@ -122,15 +122,18 @@ class _ScanResultWidgetState extends State<ScanResultWidget> {
                     style: TextStyle(fontSize: 22, color: Colors.black87,fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 20),
-                  if (widget.percentage > 70)
+                 if (widget.percentage > 70)
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xff519e94)),
-                      onPressed: () {
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xff519e94),
+                          textStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),
+                          padding: EdgeInsets.all(15)
+                      ),                      onPressed: () {
                         // Navigate to clinics with the specified cityName
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => treatment(dermatosisName: widget.dermatosisName),
+                            builder: (context) => treatment(dermatosisName: 'Eczema'),
                           ),
                         );
                       },
