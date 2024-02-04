@@ -193,6 +193,10 @@ class _CameraWidgetState extends State<CameraWidget> {
                                   ' We pledge to protect your image and use it solely for the purpose of examining the disease. Your privacy and data security are of utmost importance to us.',
                                   style: TextStyle(fontSize: 14),
                                 ),
+                                Text(
+                                    "*Remember to check out the user guide for tips on how to capture the skin spot most effectively.",
+                                  style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                ),
                               ],
                             ),
                           ),
@@ -200,8 +204,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xff519e94),
-                                textStyle: TextStyle(
-                                    color: Colors.white), // Set the text color
+                                textStyle: TextStyle(color: Colors.white), // Set the text color
                               ),
                               onPressed: () {
                                 Navigator.of(context).pop();
@@ -221,8 +224,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xff519e94),
-                                textStyle: TextStyle(
-                                    color: Colors.white), // Set the text color
+                                textStyle: TextStyle(color: Colors.white), // Set the text color
                               ),
                               onPressed: () {
                                 Navigator.of(context).pop();

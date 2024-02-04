@@ -26,11 +26,12 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Text(
                 'Your privacy is important to us. This privacy policy explains how we collect, use, and protect your personal information when you use our application.',
                 style: TextStyle(fontSize: 14),
               ),
+              SizedBox(height: 15),
               Text(
                 '1. Information Collection and Use',
                 style: TextStyle(
@@ -38,10 +39,12 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(height: 10),
               Text(
                 'We may collect information that you provide when using our app, including but not limited to:',
                 style: TextStyle(fontSize: 14),
               ),
+              SizedBox(height: 10),
               Text(
                 '- Personal information such as your name and email address.',
                 style: TextStyle(fontSize: 14),
@@ -50,14 +53,17 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                 '- Images and data you voluntarily upload for dermatological analysis.',
                 style: TextStyle(fontSize: 14),
               ),
+              SizedBox(height: 10),
               Text(
                 'We use this information to:',
                 style: TextStyle(fontSize: 14),
               ),
+              SizedBox(height: 10),
               Text(
                 '- Provide dermatological analysis services.',
                 style: TextStyle(fontSize: 14),
               ),
+              SizedBox(height: 10),
               Text(
                 '2. Data Sharing',
                 style: TextStyle(
@@ -65,6 +71,7 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(height: 10),
               Text(
                 'We do not share your personal information and uploaded data with third parties',
                 style: TextStyle(fontSize: 14),
@@ -84,18 +91,22 @@ class PrivacyAndSecurityPage extends StatelessWidget {
                 'We take your data security seriously and have implemented the following security measures to protect your information from unauthorized access:',
                 style: TextStyle(fontSize: 14),
               ),
+              SizedBox(height: 10),
               Text(
                 '1. Secure Data Storage:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               Text(
                 'Your personal information and uploaded data are stored securely on our servers. Access to this data is strictly controlled and monitored.',
                 style: TextStyle(fontSize: 14),
               ),
+              SizedBox(height: 10),
               Text(
                 '2. Access Controls:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               Text(
                 'Access to user data is restricted to authorized personnel only. Our team undergoes regular security training to ensure the safety of your information.',
                 style: TextStyle(fontSize: 14),

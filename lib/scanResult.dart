@@ -94,8 +94,16 @@ class _ScanResultWidgetState extends State<ScanResultWidget> {
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xff519e94),width: 2),
+                color: Colors.white,
+                border: Border.all(color: Color(0xff519e94),width: 5),
                 borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                      color: Color(0xff519e94),
+                      blurRadius: 7.0,
+                      offset: Offset(7,7)
+                  )
+                ],
               ),
               child: Column(
                 children: [
