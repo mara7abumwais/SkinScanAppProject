@@ -46,16 +46,7 @@ class _treatmentState extends State<treatment> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(
-                      'Treatment',
-                      style: TextStyle(fontSize: 20, color:Color(0xff519e94),fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                const Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 70),
-                    child: Text(
-                      'for',
+                      'Treatment for',
                       style: TextStyle(fontSize: 20, color:Color(0xff519e94),fontWeight: FontWeight.bold),
                     ),
                   ),

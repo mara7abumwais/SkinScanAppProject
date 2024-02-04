@@ -25,14 +25,8 @@ class _signUpState extends State<signUp> {
 
   String? selectedCity;
 
-  List<String> cities = [
-    'Jenin',
-    'Nablus',
-    'Tulkarm',
-    'Ramallah',
-    'Hebron',
-    'Bethlehem',
-  ];
+  List<String> cities = ['All Cities', 'Jenin', 'Ramallah', 'Nablus', 'Hebron', 'Tulkarm',
+    'Bethlehem','Tubas','Jerusalem','Jericho','Qalqilya','Gaza','Khan Yunis','Salfit'];
 
   @override
   Widget build(BuildContext context) {

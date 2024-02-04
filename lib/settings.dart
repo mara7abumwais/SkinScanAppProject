@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firstseniorproject/contactUs.dart';
 import 'package:firstseniorproject/dermatosisInsight.dart';
+import 'package:firstseniorproject/userGuide.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
@@ -122,7 +123,25 @@ class _SettingsState extends State<Settings> {
                       backgroundColor: Color(0xff519e94),
                     ),
                     title: 'Change Password',
-                  ),//dermatosisInsight
+                  ),
+                  SettingsItem(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => UserGuide()
+                          ));
+                    },
+                    icons: Icons.document_scanner,
+                    iconStyle: IconStyle(
+                      iconsColor: Colors.white,
+                      withBackground: true,
+                      backgroundColor: Color(0xff519e94),
+                    ),
+                    title: 'User Guide',
+                    subtitle: "SkinScan Scanning skin spot guide.",
+                    subtitleStyle: TextStyle(fontSize: 12),
+                  ),
                   SettingsItem(
                     onTap: () {
                       Navigator.push(
@@ -203,20 +222,6 @@ class _SettingsState extends State<Settings> {
                     },
                     icons: Icons.exit_to_app_rounded,
                     title: "Sign Out",
-                  ),
-                  SettingsItem(
-                   onTap: ()
-                    {
-                      setState(() {
-                        _deleteAccount();
-                      });
-                    },
-                    icons: CupertinoIcons.delete_solid,
-                    title: "Delete account",
-                    titleStyle: const TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
                   ),
                 ],
               ),

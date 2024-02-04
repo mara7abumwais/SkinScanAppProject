@@ -14,6 +14,7 @@ import 'package:firstseniorproject/createPassword.dart';
 import 'package:firstseniorproject/profile.dart';
 import 'package:firstseniorproject/records.dart';
 import 'package:firstseniorproject/scan.dart';
+import 'package:firstseniorproject/userGuide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'TabNavigation.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: <String, WidgetBuilder>{
         '/': (BuildContext ctx) => MyAnimation(),
-        //'/': (BuildContext ctx) => Login(),
+        //'/': (BuildContext ctx) => UserGuide(),
         '/signUp': (BuildContext ctx) =>StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(), builder: (context,snapshot){
           if(snapshot.hasData){

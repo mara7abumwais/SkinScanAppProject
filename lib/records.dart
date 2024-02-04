@@ -91,6 +91,7 @@ class _RecordsState extends State<Records> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Color(0xff519e94),
+          showCloseIcon: true,
           content: Text('Record deleted successfully'),
           duration: Duration(seconds: 2),
         ),
