@@ -66,7 +66,7 @@ class _CameraWidgetState extends State<CameraWidget> {
           final Uint8List imageBytes = File(croppedFile.path).readAsBytesSync();
           final String base64Image = base64Encode(imageBytes);
 
-          final Uri apiUrl = Uri.parse("https://skinscan-model.onrender.com/api");
+          final Uri apiUrl = Uri.parse("http://192.168.1.235:5000/api");
           final http.Response response = await http.put(
             apiUrl,
             headers: {'Content-Type': 'application/json'},
@@ -85,6 +85,8 @@ class _CameraWidgetState extends State<CameraWidget> {
                 .reduce((max, value) => max > value ? max : value);
             result=predictedClass;
             percent=maxValue*100;
+            print("result: $result");
+            print("percent: $percent");
           } catch (error) {
             print("Error: $error");
           }

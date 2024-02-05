@@ -130,7 +130,7 @@ class _ScanResultWidgetState extends State<ScanResultWidget> {
                     style: TextStyle(fontSize: 22, color: Colors.black87,fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 20),
-                 if (widget.percentage > 70)
+                 if (widget.percentage > 50)
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xff519e94),
