@@ -174,31 +174,4 @@ class _CreatePasswordBodyState extends State<CreatePasswordBody> {
 
 }
 
-//   void _changePassword() async {
-//     if (password.text != Confirmapassword.text) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(
-//           content: Text('Passwords do not match'),
-//           backgroundColor: Colors.red,
-//         ),
-//       );
-//     } else {
-//       try {
-//         User? user = FirebaseAuth.instance.currentUser;
 
-//         if (user != null) {
-//           await user.updatePassword(password.text);
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(
-//               content: Text('Password Changed'),
-//               backgroundColor: Color(0xff519e94),
-//             ),
-//           );
-//         }
-//       } catch (error) {
-//         print('Error occurred while changing password: $error');
-//         // Handle the error
-//       }
-//     }
-//   }
-// }
