@@ -141,7 +141,7 @@ class _ScanResultWidgetState extends State<ScanResultWidget> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => treatment(dermatosisName: 'Eczema'),
+                            builder: (context) => treatment(dermatosisName: widget.dermatosisName),
                           ),
                         );
                       },
